@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#f5c6e8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Claire Stories" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Claire's Adventures</title>
+</head>
+<body>
+  <main id="app" aria-live="polite">
+    <section id="library" class="screen library-screen">
+      <header class="library-header">
+        <div>
+          <p class="eyebrow">CLAIRE BEAR'S STORYBOOK</p>
+          <h1>Claire's Adventures</h1>
+          <p class="intro">Pick a story, then swipe to turn the pages.</p>
+        </div>
+        <button id="refreshBtn" class="round-btn" type="button" aria-label="Check for new stories" title="Check for new stories">↻</button>
+      </header>
+      <div id="status" class="status" role="status"></div>
+      <div id="storyGrid" class="story-grid"></div>
+      <footer class="library-footer">New stories appear here after the site is updated.</footer>
+    </section>
+
+    <section id="reader" class="screen reader-screen hidden" aria-label="Story reader">
+      <div class="reader-topbar">
+        <button id="homeBtn" class="pill-btn" type="button">‹ Stories</button>
+        <div class="reader-title-wrap">
+          <div id="readerTitle" class="reader-title"></div>
+          <div id="pageCount" class="page-count"></div>
+        </div>
+        <button id="moreBtn" class="pill-btn icon-only" type="button" aria-label="Reader options">•••</button>
+      </div>
+
+      <div id="stage" class="stage" tabindex="0">
+        <button id="prevBtn" class="nav-zone nav-zone-left" type="button" aria-label="Previous page">‹</button>
+        <div id="pageWrap" class="page-wrap">
+          <img id="pageImage" class="page-image" alt="Story page" draggable="false" />
+        </div>
+        <button id="nextBtn" class="nav-zone nav-zone-right" type="button" aria-label="Next page">›</button>
+      </div>
+
+      <div class="reader-bottom">
+        <div id="dots" class="dots" aria-hidden="true"></div>
+        <button id="againBtn" class="again-btn hidden" type="button">Read Again</button>
+      </div>
+
+      <div id="readerMenu" class="reader-menu hidden">
+        <button id="fitToggle" type="button">Fill screen: Off</button>
+        <button id="closeMenu" type="button">Close</button>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

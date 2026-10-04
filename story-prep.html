@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Claire Story Prep</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;background:#f8f3fb;color:#382d3d}.wrap{max-width:1050px;margin:auto;padding:28px}h1{font-size:2.3rem;margin:0 0 8px}.note{color:#725f76}.panel{background:#fff;border-radius:22px;padding:20px;box-shadow:0 14px 40px #4c38501a;margin:18px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}label{font-weight:700;font-size:.9rem}input,select,button{font:inherit}input,select{width:100%;padding:11px;border-radius:12px;border:1px solid #d9ccdc;margin-top:6px}button{border:0;background:#5b3d69;color:#fff;border-radius:999px;padding:12px 18px;font-weight:700;cursor:pointer}button.alt{background:#fff;color:#5b3d69;border:1px solid #d9ccdc}.actions{display:flex;flex-wrap:wrap;gap:10px}.preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:16px}.thumb{background:#f1e8f3;border-radius:14px;padding:7px}.thumb canvas{width:100%;display:block;border-radius:9px}.small{font-size:.86rem;color:#806d83}code{background:#f3edf5;padding:2px 6px;border-radius:6px}.ok{color:#28704b;font-weight:700}
+</style></head><body><div class="wrap">
+<h1>Add a New Claire Story</h1><p class="note">This helper slices a 12-frame storyboard into pages and prepares the story-list update. Nothing is uploaded anywhere from this page.</p>
+<div class="panel"><div class="grid">
+<div><label>Storyboard image<input id="imageFile" type="file" accept="image/*"></label></div>
+<div><label>Story title<input id="title" placeholder="e.g. Beach Day"></label></div>
+<div><label>Folder name<input id="slug" placeholder="beach-day"></label></div>
+<div><label>Panel layout<select id="layout"><option value="4x3">4 across × 3 down</option><option value="3x4">3 across × 4 down</option></select></label></div>
+<div><label>Current stories.json (recommended)<input id="manifestFile" type="file" accept="application/json,.json"></label></div>
+</div></div>
+<div class="panel"><div class="actions"><button id="slice">1. Slice & Preview</button><button id="download" class="alt" disabled>2. Download 12 Pages</button><button id="manifest" class="alt" disabled>3. Download Updated stories.json</button></div><p id="status" class="small"></p><div id="preview" class="preview"></div></div>
+<div class="panel"><h2>Upload after preparing</h2><p class="small">Create <code>stories/FOLDER-NAME/</code> in your website files, upload <code>01.jpg</code> through <code>12.jpg</code>, and use <code>01.jpg</code> again as <code>cover.jpg</code>. Then replace the old <code>stories.json</code> with the updated one downloaded here.</p></div>
+</div><script>
+const q=s=>document.querySelector(s), imageFile=q('#imageFile'), title=q('#title'), slug=q('#slug'), layout=q('#layout'), mf=q('#manifestFile'), preview=q('#preview'), status=q('#status'), dl=q('#download'), md=q('#manifest');
+let blobs=[],manifestData=null;
+function slugify(v){return v.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+title.addEventListener('input',()=>{if(!slug.dataset.edited)slug.value=slugify(title.value)});slug.addEventListener('input',()=>slug.dataset.edited='1');
+mf.addEventListener('change',async()=>{try{manifestData=JSON.parse(await mf.files[0].text());status.textContent='Current stories.json loaded.'}catch{manifestData=null;status.textContent='Could not read that stories.json file.'}});
+q('#slice').addEventListener('click',async()=>{
+ if(!imageFile.files[0]||!title.value.trim()){status.textContent='Choose an image and enter a story title first.';return}
+ const [cols,rows]=layout.value.split('x').map(Number); const img=new Image(); img.src=URL.createObjectURL(imageFile.files[0]); await img.decode();
+ preview.innerHTML=''; blobs=[]; let n=1;
+ for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+   const x0=Math.round(c*img.naturalWidth/cols),x1=Math.round((c+1)*img.naturalWidth/cols),y0=Math.round(r*img.naturalHeight/rows),y1=Math.round((r+1)*img.naturalHeight/rows);
+   const sw=x1-x0,sh=y1-y0,scale=2,can=document.createElement('canvas');can.width=sw*scale;can.height=sh*scale;can.getContext('2d').drawImage(img,x0,y0,sw,sh,0,0,can.width,can.height);
+   const blob=await new Promise(res=>can.toBlob(res,'image/jpeg',.91)); blobs.push(blob);
+   const box=document.createElement('div');box.className='thumb';box.appendChild(can);const p=document.createElement('div');p.className='small';p.textContent=String(n).padStart(2,'0')+'.jpg';box.appendChild(p);preview.appendChild(box);n++;
+ }
+ dl.disabled=false;md.disabled=false;status.innerHTML='<span class="ok">Ready:</span> 12 pages created.';
+});
+function save(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1200)}
+dl.addEventListener('click',async()=>{
+ if(blobs.length!==12)return; for(let i=0;i<blobs.length;i++){save(blobs[i],String(i+1).padStart(2,'0')+'.jpg');await new Promise(r=>setTimeout(r,180))}
+ status.textContent='Pages downloaded. Your browser may ask you to allow multiple downloads.';
+});
+md.addEventListener('click',()=>{
+ if(blobs.length!==12)return; const id=slugify(slug.value||title.value),base=`stories/${id}/`; let data=manifestData&&manifestData.stories?structuredClone(manifestData):{version:1,stories:[]};
+ const old=data.stories.findIndex(s=>s.id===id); const maxOrder=Math.max(0,...data.stories.map(s=>Number(s.order)||0));
+ const entry={id,title:title.value.trim(),subtitle:'12-page story',cover:base+'cover.jpg',pages:Array.from({length:12},(_,i)=>base+String(i+1).padStart(2,'0')+'.jpg'),order:old>=0?(data.stories[old].order||maxOrder+1):maxOrder+1};
+ if(old>=0)data.stories[old]=entry;else data.stories.push(entry); data.version=(Number(data.version)||0)+1;
+ save(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'stories.json'); status.innerHTML='<span class="ok">Updated stories.json downloaded.</span>';
+});
+</script></body></html>
