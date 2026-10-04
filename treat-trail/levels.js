@@ -1,6 +1,6 @@
 /* Level data only. Add another level object here; the engine is reusable. */
 export const LEVELS = [{
-  id: 'sunshine-meadow', name: 'Sunshine Meadow', version: 1,
+  id: 'sunshine-meadow', name: 'Sunshine Meadow', version: 1, music: 'meadow',
   width: 6100, height: 600, start: {x: 300, y: 460},
   goal: {x: 5810, y: 460},
   ground: [

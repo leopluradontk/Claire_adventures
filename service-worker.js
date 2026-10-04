@@ -1,11 +1,12 @@
-/* Version 4: Treat Trail and network-first updates with an offline fallback. */
-const CACHE = 'claire-adventures-v4-treat-trail';
+/* Version 5: Treat Trail Beta 2 and network-first updates with an offline fallback. */
+const CACHE = 'claire-adventures-v5-trail-beta2';
 const ROOT = new URL('./', self.location.href);
 const CORE = ['index.html', 'styles.css', 'app.js', 'stories.json',
   'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'treat-time.html', 'treat-time.css', 'treat-time.js', 'site-update.js',
   'treat-trail.html', 'treat-trail/style.css', 'treat-trail/game.js',
-  'treat-trail/engine.js', 'treat-trail/levels.js', 'treat-trail/renderer.js'];
+  'treat-trail/engine.js', 'treat-trail/levels.js', 'treat-trail/renderer.js',
+  'treat-trail/audio.js', 'treat-trail/progress.js', 'treat-trail/celebration.js', 'treat-trail/beta2.css'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {

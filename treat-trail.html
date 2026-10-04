@@ -8,49 +8,73 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="treat-trail/style.css?v=beta1">
-  <script src="site-update.js?v=2" defer></script>
-  <script type="module" src="treat-trail/game.js?v=beta1"></script>
-  <title>Treat Trail | Claire's Adventures</title>
+  <link rel="stylesheet" href="treat-trail/style.css?v=beta2">
+  <link rel="stylesheet" href="treat-trail/beta2.css?v=beta2">
+  <script src="site-update.js?v=3" defer></script>
+  <script type="module" src="treat-trail/game.js?v=beta2"></script>
+  <title>Treat Trail Beta 2 | Claire's Adventures</title>
 </head>
 <body>
-  <main class="trail-shell">
-    <header class="trail-header">
-      <a class="nav-button" href="./" aria-label="Back to stories">&#8249; <span>Stories</span></a>
-      <div class="brand"><span class="eyebrow">CLAIRE &amp; FRIENDS</span><h1>Treat Trail <small>BETA 1</small></h1></div>
+<main class="trail-shell">
+  <header class="trail-header">
+    <a class="nav-button" id="storiesLink" href="./" aria-label="Back to stories">&#8249; <span>Stories</span></a>
+    <div class="brand"><span class="eyebrow">CLAIRE &amp; FRIENDS</span><h1>Treat Trail <small>BETA 2</small></h1></div>
+    <div class="toolbar">
+      <button class="nav-button tool-button" id="muteButton" aria-label="Mute all sound" aria-pressed="false" title="Mute all sound">&#9835;</button>
+      <button class="nav-button tool-button" id="settingsButton" aria-label="Game settings" title="Settings">&#9881;</button>
       <button class="nav-button" id="pauseButton" disabled aria-label="Pause game">&#10074;&#10074; <span>Pause</span></button>
-    </header>
-    <section class="game-frame" aria-label="Sunshine Meadow game">
-      <canvas id="gameCanvas" aria-label="Side-scrolling adventure. Move Claire with Left and Right and press Jump to collect treats." role="img">Your browser needs Canvas support to play this game.</canvas>
-      <div class="hud" aria-hidden="true">
-        <div class="treat-counter"><span class="cookie-icon">&#127850;</span><strong id="treatCount">0 <small>/ 40</small></strong><span>treats</span></div>
-        <div class="route"><span>Sunshine Meadow</span><div class="route-track"><i id="progressFill"></i></div><span class="route-goal">Picnic &#9825;</span></div>
-      </div>
-      <div id="toast" class="toast" role="status" aria-live="polite"></div>
-      <div class="overlay" id="overlay">
-        <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" aria-describedby="dialogText">
-          <span class="dialog-badge" id="dialogBadge">ONE LITTLE LEVEL. FOUR BEST FRIENDS.</span>
-          <span class="dialog-flower" aria-hidden="true">&#10047;</span>
-          <h2 id="dialogTitle">Let's take the<br>treat trail!</h2>
-          <p id="dialogText">Help Claire collect yummy treats on the way to a picnic. Pusheen, Hello Kitty, and Raspberry follow her every hop!</p>
-          <div class="how-to" id="howTo"><span>&#8592; &#8594;<small>Move</small></span><span>&#8593;<small>Jump</small></span><span>&#127850;<small>Collect</small></span></div>
-          <p class="little-note" id="dialogNote">Hold Jump for a bigger hop. No lives. No hurry.</p>
-          <button class="primary-button" id="primaryButton" disabled>Getting ready...</button>
-          <button class="text-button" id="secondaryButton" hidden>Start over</button>
-          <p class="best-note" id="bestNote"></p>
-        </section>
-      </div>
-    </section>
-    <section class="controls" aria-label="Game controls">
-      <div class="direction-controls">
-        <button class="control" data-control="left" aria-label="Move left" disabled><b>&#8592;</b><span>Left</span></button>
-        <button class="control" data-control="right" aria-label="Move right" disabled><b>&#8594;</b><span>Right</span></button>
-      </div>
-      <div class="control-hint"><strong>Friends stick together.</strong><span>Keyboard: &#8592; &#8594; + Space</span><span class="portrait-tip">Try turning your iPad sideways.</span></div>
-      <button class="control jump-control" data-control="jump" aria-label="Jump. Hold for a higher jump." disabled><b>&#8593;</b><span>Jump</span></button>
-    </section>
-    <footer class="trail-footer"><span>Level 1 &#183; Sunshine Meadow</span><span id="offlineStatus">Beta 1 &#183; Quiet play</span></footer>
-    <noscript><p>This game needs JavaScript. <a href="./">Return to the storybook</a>.</p></noscript>
-  </main>
+    </div>
+  </header>
+  <section class="game-frame" aria-label="Treat Trail game">
+    <canvas id="gameCanvas" aria-label="Move Claire with Left and Right; press Jump to collect treats. Her friends follow her." role="img"></canvas>
+    <div class="hud" id="hud" aria-hidden="true">
+      <div class="treat-counter"><span class="cookie-icon">&#127850;</span><strong id="treatCount">0 <small>/ 40</small></strong><span>treats</span></div>
+      <div class="route"><span id="routeName">Sunshine Meadow</span><div class="route-track"><i id="progressFill"></i></div><span class="route-goal">Picnic &#9825;</span></div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="celebrateBanner" class="celebrate-banner" hidden><span class="dialog-badge">FOUR FRIENDS. ONE HAPPY FINISH.</span><h2 id="celebrateTitle">We made it!</h2><p>Time for a little happy dance.</p><button id="skipCelebration" class="text-button">Show my treats &#8250;</button></div>
+    <div class="overlay" id="overlay">
+      <section class="dialog menu-dialog" id="levelPanel" role="dialog" aria-modal="true" aria-labelledby="levelTitle">
+        <span class="dialog-badge">TREAT TRAIL / BETA 2</span><h2 id="levelTitle">Pick an adventure</h2>
+        <p class="menu-intro">Little hops. Yummy treats. Best friends.</p>
+        <div id="levelCards" class="level-cards"></div>
+        <p class="little-note">More trails can join the map later. Every level is open to play.</p>
+        <p class="save-note" id="menuSaveNote">Progress and stars stay on this device.</p>
+        <a href="./" class="text-button">Back to Stories</a>
+      </section>
+      <section class="dialog" id="messagePanel" hidden role="dialog" aria-modal="true" aria-labelledby="dialogTitle" aria-describedby="dialogText">
+        <span class="dialog-badge" id="dialogBadge">A LITTLE BREAK</span><span class="dialog-flower" aria-hidden="true">&#10047;</span>
+        <h2 id="dialogTitle">Getting ready...</h2><p id="dialogText">Your friends will be here in a moment.</p>
+        <p class="little-note" id="dialogNote"></p>
+        <button class="primary-button" id="primaryButton">Keep going</button>
+        <button class="text-button" id="secondaryButton" hidden></button>
+        <button class="text-button" id="thirdButton" hidden></button>
+      </section>
+      <section class="dialog settings-dialog" id="settingsPanel" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <span class="dialog-badge">MAKE IT COMFORTABLE</span><h2 id="settingsTitle">Little settings</h2>
+        <label class="range-label" for="musicVolume">Music <output id="musicValue" for="musicVolume">28%</output></label><input id="musicVolume" type="range" min="0" max="100" value="28">
+        <label class="range-label" for="effectsVolume">Sound effects <output id="effectsValue" for="effectsVolume">50%</output></label><input id="effectsVolume" type="range" min="0" max="100" value="50">
+        <label class="switch-row"><span><strong>Quiet mode</strong><small>Mute music and sound effects</small></span><input id="muteSetting" type="checkbox"></label>
+        <label class="switch-row"><span><strong>Gentle Effects</strong><small>Slow hearts instead of fireworks</small></span><input id="gentleSetting" type="checkbox"></label>
+        <p id="motionNote" class="little-note" hidden>Gentle Effects is on because this device uses Reduce Motion.</p>
+        <label class="switch-row"><span><strong>Bigger buttons</strong><small>More room for little fingers</small></span><input id="largeSetting" type="checkbox"></label>
+        <p class="little-note">Your adventure is paused. Music starts again when you return to playing.</p>
+        <button id="closeSettings" class="primary-button">Done</button><p class="save-note">Settings are remembered on this device only.</p>
+      </section>
+    </div>
+  </section>
+  <section id="resultBar" class="result-bar" hidden aria-labelledby="resultTitle" aria-live="polite">
+    <div><span class="dialog-badge">PICNIC CLUB / LEVEL COMPLETE</span><h2 id="resultTitle">Picnic time!</h2><p id="resultText"></p><p id="bestText" class="save-note"></p></div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-actions"><button class="primary-button" id="replayButton">Play again</button><button class="nav-button" id="levelsButton">Level menu</button></div>
+  </section>
+  <section class="controls" id="controls" aria-label="Game controls">
+    <div class="direction-controls"><button class="control" data-control="left" aria-label="Move left" disabled><b>&#8592;</b><span>Left</span></button><button class="control" data-control="right" aria-label="Move right" disabled><b>&#8594;</b><span>Right</span></button></div>
+    <div class="control-hint"><strong>Friends stick together.</strong><span>Keyboard: &#8592; &#8594; + Space</span><span class="portrait-tip">Try turning your iPad sideways.</span></div>
+    <button class="control jump-control" data-control="jump" aria-label="Jump. Hold for a higher jump." disabled><b>&#8593;</b><span>Jump</span></button>
+  </section>
+  <footer class="trail-footer"><span id="saveStatus">Progress stays on this device</span><span id="offlineStatus">Beta 2</span></footer>
+  <noscript><p>This game needs JavaScript. <a href="./">Return to Stories</a>.</p></noscript>
+</main>
 </body>
 </html>
