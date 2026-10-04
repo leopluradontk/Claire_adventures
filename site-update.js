@@ -6,11 +6,13 @@
   const hadController = Boolean(navigator.serviceWorker.controller);
   async function checkOffline() {
     if (!('caches' in window)) return;
-    const files = location.pathname.endsWith('/treat-trail.html')
+    const files = location.pathname.endsWith('/coloring-time.html')
+      ? ['coloring-time.html', 'coloring/style.css', 'coloring/app.js', 'coloring/paint.js', 'coloring/store.js', 'coloring/pages.js', 'coloring/art.js','coloring/art-data.js','coloring/art/claire0.js','coloring/art/claire1.js','coloring/art/claire2.js','coloring/art/pusheen0.js','coloring/art/pusheen1.js','coloring/art/kitty0.js','coloring/art/kitty1.js','coloring/art/raspberry0.js','coloring/art/raspberry1.js','coloring/art/together0.js','coloring/art/together1.js','coloring/art/together2.js','coloring/art/together3.js','coloring/art/together4.js']
+      : location.pathname.endsWith('/treat-trail.html')
       ? ['treat-trail.html','treat-trail/style.css','treat-trail/game.js','treat-trail/levels.js','treat-trail/engine.js','treat-trail/renderer.js','treat-trail/audio.js','treat-trail/progress.js','treat-trail/celebration.js','treat-trail/release.css','treat-trail/themes.js']
       : ['treat-time.html','treat-time.css','treat-time.js'];
     try {
-      const cache = await caches.open('claire-adventures-v6-trail-1.0.0');
+      const cache = await caches.open('claire-adventures-v7-coloring-1.0.0');
       const ready = await Promise.all(files.map(file => cache.match(new URL(file, document.baseURI).href)));
       if (ready.every(response => response?.ok)) {
         document.documentElement.dataset.offlineReady = 'true';

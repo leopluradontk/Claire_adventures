@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="theme-color" content="#f5d5ed"><meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-title" content="Claire Stories">
+ <link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest">
+ <link rel="stylesheet" href="coloring/style.css?v=1.0.0">
+ <script src="site-update.js?v=5" defer></script><script type="module" src="coloring/app.js?v=1.0.0"></script>
+ <title>Coloring Time | Claire's Adventures</title>
+</head>
+<body>
+ <main>
+  <section id="gallery" class="gallery">
+   <header class="gallery-head"><a class="soft-button" href="./">&#8962; Home</a><button class="soft-button" id="myPictures" aria-pressed="false">&#9825; My pictures</button></header>
+   <div class="welcome"><span class="eyebrow">CLAIRE'S LITTLE ART STUDIO</span><h1>Coloring Time <span aria-hidden="true">&#9825;</span></h1><p>A little colour. A lot of imagination.</p><span class="cast">Claire + Pusheen + Hello Kitty + Raspberry</span></div>
+   <nav id="categories" class="categories" aria-label="Page categories"></nav>
+   <p id="galleryStatus" class="gallery-status" role="status">Opening the art studio...</p>
+   <div id="pageGrid" class="page-grid"></div>
+   <footer><span>Draw with a finger, stylus or mouse.</span><span id="offlineStatus">Coloring Time 1.0</span></footer>
+  </section>
+  <section id="editor" class="editor" hidden aria-label="Coloring studio">
+   <header class="studio-head"><button id="backGallery" class="soft-button">&#8249; Gallery</button><div><span class="eyebrow">MAKE IT YOURS</span><h2 id="pageTitle">Your picture</h2></div><button id="savePicture" class="save-button">Save picture</button></header>
+   <div class="workspace">
+    <aside class="tools" aria-label="Drawing tools">
+     <div class="tool-pair"><button id="rainbow" class="tool rainbow selected" aria-pressed="true"><span aria-hidden="true">&#127752;</span>Rainbow brush</button><button id="eraser" class="tool" aria-pressed="false"><span aria-hidden="true">&#9649;</span>Eraser</button></div>
+     <fieldset class="sizes"><legend>Brush size</legend><div><button data-size="10" aria-label="Small brush" aria-pressed="false"><i style="width:7px;height:7px"></i></button><button data-size="26" class="selected" aria-label="Medium brush" aria-pressed="true"><i style="width:15px;height:15px"></i></button><button data-size="52" aria-label="Large brush" aria-pressed="false"><i style="width:24px;height:24px"></i></button></div></fieldset>
+     <div class="history-tools"><button id="undo" class="soft-button" disabled>&#8630; Undo</button><button id="redo" class="soft-button" disabled>&#8631; Redo</button><button id="clear" class="soft-button clear-button">Clear page</button></div>
+    </aside>
+    <div id="paperArea" class="paper-area"><div id="paper" class="paper"><canvas id="paint" width="800" height="1000" aria-label="Draw your colours on this page. Choose the rainbow brush or a colour first."></canvas><img id="lineArt" alt="" draggable="false"></div><div id="loadingPage" class="loading" hidden>Opening your picture...</div></div>
+    <aside class="colours" aria-label="Colour palettes"><label for="palette">Choose your colours</label><select id="palette"><option value="bright">Bright</option><option value="pastel">Pastel</option><option value="nature">Nature</option><option value="skin">Skin &amp; hair</option></select><div id="swatches" class="swatches" role="group" aria-label="Choose a colour"></div><p id="toolStatus" class="tool-status">Rainbow brush</p><p class="tip">The outlines stay safe,<br>even when you erase.</p></aside>
+   </div>
+   <footer class="studio-foot"><span id="saveStatus" role="status" aria-live="polite">Your colours save on this device.</span><span>Made with imagination &#9825;</span></footer>
+  </section>
+ </main>
+ <div id="clearDialog" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="clearTitle"><div class="dialog-card"><span class="dialog-icon" aria-hidden="true">&#9825;</span><h2 id="clearTitle">A fresh start?</h2><p>This clears your colours on this page, not the outlines. You can Undo it.</p><div class="dialog-actions"><button id="cancelClear" class="soft-button">Keep my picture</button><button id="confirmClear" class="save-button">Yes, clear colours</button></div></div></div>
+ <div id="exportDialog" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="exportTitle"><div class="dialog-card export-card"><button id="closeExport" class="close-button" aria-label="Close saved picture preview">&#215;</button><h2 id="exportTitle">Made by Claire &#9825;</h2><p id="exportStatus" role="status">Getting your picture ready...</p><img id="exportPreview" alt="Your finished colouring picture"><div class="dialog-actions"><a id="downloadPicture" class="save-button" download>Download PNG</a><button id="sharePicture" class="soft-button" hidden>Share / Save to Photos</button></div><p class="small-note">Your in-progress colours also stay in My pictures on this device.</p></div></div>
+ <div id="toast" class="toast" role="status"></div>
+ <noscript><p class="noscript">Turn on JavaScript to use the colouring tools. <a href="./">Back to Stories</a></p></noscript>
+</body>
+</html>
