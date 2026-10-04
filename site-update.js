@@ -1,11 +1,27 @@
-/* Shared update check. No user data is stored or sent. */
+/* Shared update/offline check. No user data is sent. */
 (() => {
   'use strict';
   if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
   let reloading = false;
   const hadController = Boolean(navigator.serviceWorker.controller);
+  async function checkOffline() {
+    if (!('caches' in window)) return;
+    const files = location.pathname.endsWith('/treat-trail.html')
+      ? ['treat-trail.html','treat-trail/style.css','treat-trail/game.js','treat-trail/levels.js','treat-trail/engine.js','treat-trail/renderer.js']
+      : ['treat-time.html','treat-time.css','treat-time.js'];
+    try {
+      const ready = await Promise.all(files.map(file => caches.match(new URL(file, document.baseURI).href)));
+      if (ready.every(response => response?.ok)) {
+        document.documentElement.dataset.offlineReady = 'true';
+        document.dispatchEvent(new Event('storybook:offline-ready'));
+      }
+    } catch (_) { /* Offline storage is optional. */ }
+  }
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (hadController && !reloading) {
+    checkOffline();
+    if (document.body.dataset.gameRunning === 'true') {
+      document.dispatchEvent(new Event('storybook:update-ready'));
+    } else if (hadController && !reloading) {
       reloading = true;
       location.reload();
     }
@@ -14,15 +30,9 @@
     try {
       const registration = await navigator.serviceWorker.register('service-worker.js', {updateViaCache: 'none'});
       registration.update().catch(() => {});
-      document.getElementById('refreshBtn')?.addEventListener('click', () => {
-        registration.update().catch(() => {});
-      });
+      document.getElementById('refreshBtn')?.addEventListener('click', () => registration.update().catch(() => {}));
       await navigator.serviceWorker.ready;
-      if ('caches' in window) {
-        const cache = await caches.open('claire-adventures-v3-treat-time');
-        const saved = await cache.match(new URL('treat-time.html', document.baseURI).href);
-        if (saved) document.dispatchEvent(new Event('storybook:offline-ready'));
-      }
+      await checkOffline();
     } catch (error) {
       console.info('Offline saving is unavailable; online play still works.', error);
     }

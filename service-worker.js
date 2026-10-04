@@ -1,9 +1,11 @@
-/* Version 3: Treat Time and network-first updates with an offline fallback. */
-const CACHE = 'claire-adventures-v3-treat-time';
+/* Version 4: Treat Trail and network-first updates with an offline fallback. */
+const CACHE = 'claire-adventures-v4-treat-trail';
 const ROOT = new URL('./', self.location.href);
 const CORE = ['index.html', 'styles.css', 'app.js', 'stories.json',
   'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
-  'treat-time.html', 'treat-time.css', 'treat-time.js', 'site-update.js'];
+  'treat-time.html', 'treat-time.css', 'treat-time.js', 'site-update.js',
+  'treat-trail.html', 'treat-trail/style.css', 'treat-trail/game.js',
+  'treat-trail/engine.js', 'treat-trail/levels.js', 'treat-trail/renderer.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
@@ -16,7 +18,7 @@ self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
     // Retain previously saved story pages. Do not touch other sites' caches.
-    for (const name of ['claire-adventures-v1', 'claire-adventures-v2']) {
+    for (const name of (await caches.keys()).filter(key => key.startsWith('claire-adventures-') && key !== CACHE)) {
       if (!(await caches.has(name))) continue;
       const old = await caches.open(name);
       let copied = true;

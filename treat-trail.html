@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ecf5eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="treat-trail/style.css?v=beta1">
+  <script src="site-update.js?v=2" defer></script>
+  <script type="module" src="treat-trail/game.js?v=beta1"></script>
+  <title>Treat Trail | Claire's Adventures</title>
+</head>
+<body>
+  <main class="trail-shell">
+    <header class="trail-header">
+      <a class="nav-button" href="./" aria-label="Back to stories">&#8249; <span>Stories</span></a>
+      <div class="brand"><span class="eyebrow">CLAIRE &amp; FRIENDS</span><h1>Treat Trail <small>BETA 1</small></h1></div>
+      <button class="nav-button" id="pauseButton" disabled aria-label="Pause game">&#10074;&#10074; <span>Pause</span></button>
+    </header>
+    <section class="game-frame" aria-label="Sunshine Meadow game">
+      <canvas id="gameCanvas" aria-label="Side-scrolling adventure. Move Claire with Left and Right and press Jump to collect treats." role="img">Your browser needs Canvas support to play this game.</canvas>
+      <div class="hud" aria-hidden="true">
+        <div class="treat-counter"><span class="cookie-icon">&#127850;</span><strong id="treatCount">0 <small>/ 40</small></strong><span>treats</span></div>
+        <div class="route"><span>Sunshine Meadow</span><div class="route-track"><i id="progressFill"></i></div><span class="route-goal">Picnic &#9825;</span></div>
+      </div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <div class="overlay" id="overlay">
+        <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" aria-describedby="dialogText">
+          <span class="dialog-badge" id="dialogBadge">ONE LITTLE LEVEL. FOUR BEST FRIENDS.</span>
+          <span class="dialog-flower" aria-hidden="true">&#10047;</span>
+          <h2 id="dialogTitle">Let's take the<br>treat trail!</h2>
+          <p id="dialogText">Help Claire collect yummy treats on the way to a picnic. Pusheen, Hello Kitty, and Raspberry follow her every hop!</p>
+          <div class="how-to" id="howTo"><span>&#8592; &#8594;<small>Move</small></span><span>&#8593;<small>Jump</small></span><span>&#127850;<small>Collect</small></span></div>
+          <p class="little-note" id="dialogNote">Hold Jump for a bigger hop. No lives. No hurry.</p>
+          <button class="primary-button" id="primaryButton" disabled>Getting ready...</button>
+          <button class="text-button" id="secondaryButton" hidden>Start over</button>
+          <p class="best-note" id="bestNote"></p>
+        </section>
+      </div>
+    </section>
+    <section class="controls" aria-label="Game controls">
+      <div class="direction-controls">
+        <button class="control" data-control="left" aria-label="Move left" disabled><b>&#8592;</b><span>Left</span></button>
+        <button class="control" data-control="right" aria-label="Move right" disabled><b>&#8594;</b><span>Right</span></button>
+      </div>
+      <div class="control-hint"><strong>Friends stick together.</strong><span>Keyboard: &#8592; &#8594; + Space</span><span class="portrait-tip">Try turning your iPad sideways.</span></div>
+      <button class="control jump-control" data-control="jump" aria-label="Jump. Hold for a higher jump." disabled><b>&#8593;</b><span>Jump</span></button>
+    </section>
+    <footer class="trail-footer"><span>Level 1 &#183; Sunshine Meadow</span><span id="offlineStatus">Beta 1 &#183; Quiet play</span></footer>
+    <noscript><p>This game needs JavaScript. <a href="./">Return to the storybook</a>.</p></noscript>
+  </main>
+</body>
+</html>
