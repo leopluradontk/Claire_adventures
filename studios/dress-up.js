@@ -9,7 +9,7 @@ document.body.dataset.gameRunning='true';
 function setLook(next,animate=true){look=cleanLook(next);store.draft(kind,look);render(animate);}
 function render(animate=false){
  const state=store.state(),score=store.stars();$('starTotal').textContent=score.total;
- $('starBank').title=score.trail+' adventure stars + '+score.bakery+' completed friend orders';
+ $('starBank').title=score.trail+' adventure stars + '+score.bakery+' completed friend orders + '+score.arcade+' playroom stars';
  $('castTabs').innerHTML=Object.entries(CAST).map(([id,name])=>'<button class="cast-tab '+(id===kind?'selected':'')+'" data-kind="'+id+'" aria-pressed="'+(id===kind)+'">'+avatar(id,state.looks[id])+'<span>'+name+'</span></button>').join('');
  $('characterName').textContent=CAST[kind];$('avatarPreview').innerHTML=avatar(kind,look);
  $('avatarPreview').classList.remove('twirl');if(animate){void $('avatarPreview').offsetWidth;$('avatarPreview').classList.add('twirl');}
@@ -24,7 +24,7 @@ function render(animate=false){
 }
 $('castTabs').onclick=e=>{const b=e.target.closest('[data-kind]');if(!b)return;kind=b.dataset.kind;const state=store.state();look=cleanLook(state.drafts[kind]||state.looks[kind]||DEFAULT_LOOK);ui.fx();render();};
 $('styleChoices').onclick=e=>{const b=e.target.closest('[data-style]');if(!b)return;const id=b.dataset.style;
- if(!store.unlocked(id)){const s=STYLES.find(x=>x.id===id);const text='Earn '+s.stars+' friendship stars from adventures or Friend Orders to unlock '+s.name+'. Your other outfits are ready now!';ui.notify(text);ui.say(text);return;}
+ if(!store.unlocked(id)){const s=STYLES.find(x=>x.id===id);const text='Earn '+s.stars+' friendship stars from adventures, Friend Orders, Memory Match or Stuffy Snake to unlock '+s.name+'. Your other outfits are ready now!';ui.notify(text);ui.say(text);return;}
  ui.fx();setLook({...look,style:id,head:'outfit'});
 };
 $('colourChoices').onclick=e=>{const b=e.target.closest('[data-colour]');if(b){ui.fx();setLook({...look,[b.dataset.field]:b.dataset.colour},false);}};

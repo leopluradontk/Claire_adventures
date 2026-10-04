@@ -1,7 +1,7 @@
-/* Version 8: Stuffy Studios 1.1 and network-first updates with an offline fallback. */
-const CACHE = 'claire-adventures-v8-studios-1.1.0';
+/* Version 9: Stuffy Playroom 1.2 and network-first updates with an offline fallback. */
+const CACHE = 'claire-adventures-v9-playroom-1.2.0';
 const ROOT = new URL('./', self.location.href);
-const CORE = ['index.html', 'styles.css', 'app.js', 'stories.json',
+const CORE = ["memory-match.html", "stuffy-snake.html", "arcade/style.css", "arcade/designs.js", "arcade/memory-model.js", "arcade/memory-app.js", "arcade/snake-model.js", "arcade/snake-art.js", "arcade/snake-app.js", "arcade/common.js", "arcade/store.js", 'index.html', 'styles.css', 'app.js', 'stories.json',
   'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'treat-time.html', 'treat-time.css', 'treat-time.js', 'site-update.js',
   'treat-trail.html', 'treat-trail/style.css', 'treat-trail/game.js',

@@ -1,11 +1,21 @@
 {
   "app": "Claire Adventures",
-  "version": "1.1.0",
-  "release": "Stuffy Studios",
-  "basedOn": "bd07c6bb23ce2b97a7f86e376fe2b5d4df531e7d",
-  "recoveryBranch": "backup/pre-stuffy-studios-1.1.0",
-  "activitiesAdded": ["bakery.html", "dress-up.html"],
-  "coloringVersion": "1.0.0",
-  "trailVersion": "1.0.0 with wardrobe integration",
-  "saveSchema": "additive claire-stuffy-studios:v1"
+  "version": "1.2.0",
+  "release": "Stuffy Playroom",
+  "basedOn": "dff6b7b6e21d122dba6ed5df6e03f21266edadea",
+  "recoveryBranch": "backup/pre-playroom-1.2.0",
+  "activitiesAdded": [
+    "memory-match.html",
+    "stuffy-snake.html"
+  ],
+  "saveSchema": "additive claire-arcade:v1",
+  "preserved": [
+    "coloring",
+    "stories",
+    "trail levels and physics",
+    "bakery",
+    "dress-up",
+    "Treat Time",
+    "all earlier save keys"
+  ]
 }

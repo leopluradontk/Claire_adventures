@@ -68,7 +68,7 @@ export class StudioStore extends ProgressStore {
  }
  state(){return this.available?this.read():(this.session||this.read());}
  change(fn){const s=this.state();fn(s);this.write(s);return s;}
- stars(){const s=this.state();let trail=0;for(const id of ['sunshine-meadow','pumpkin-patch','snowflake-trail','sunny-seaside'])trail+=this.best({id,treats:{length:40}}).stars;return {trail,bakery:s.ordersCompleted,total:trail+s.ordersCompleted};}
+ stars(){const s=this.state();let trail=0;for(const id of ['sunshine-meadow','pumpkin-patch','snowflake-trail','sunny-seaside'])trail+=this.best({id,treats:{length:40}}).stars;const a=this.json('claire-arcade:v1');const arcade=a?.schema===1&&Number.isInteger(a.earned)&&a.earned>=0&&a.earned<=1000000?a.earned:0;return {trail,bakery:s.ordersCompleted,arcade,total:trail+s.ordersCompleted+arcade};}
  unlocked(style){const found=STYLES.find(x=>x.id===style);return !!found&&this.stars().total>=found.stars;}
  draft(kind,look){if(!CAST[kind])return;this.change(s=>s.drafts[kind]=cleanLook(look));}
  wear(kind,look,all=false){if(!CAST[kind]||!this.unlocked(look.style))return false;this.change(s=>{for(const k of all?Object.keys(CAST):[kind])s.looks[k]=s.drafts[k]=cleanLook(look);});return true;}
