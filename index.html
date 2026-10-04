@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#f5c6e8" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -10,6 +10,8 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="treat-time.css?v=1" />
+  <script src="site-update.js?v=1" defer></script>
   <title>Claire's Adventures</title>
 </head>
 <body>
@@ -24,6 +26,11 @@
         <button id="refreshBtn" class="round-btn" type="button" aria-label="Check for new stories" title="Check for new stories">↻</button>
       </header>
       <div id="status" class="status" role="status"></div>
+      <a class="treat-entry" id="treatTimeLink" href="treat-time.html">
+        <span class="entry-cookie" aria-hidden="true">&#127850;</span>
+        <span><span class="entry-label">A LITTLE PLAY BREAK</span><strong>Treat Time</strong><span>Give Pusheen, Hello Kitty &amp; Raspberry a treat.</span></span>
+        <span class="entry-go">Let's play &#8250;</span>
+      </a>
       <div id="storyGrid" class="story-grid"></div>
       <footer class="library-footer">New stories appear here after the site is updated.</footer>
     </section>

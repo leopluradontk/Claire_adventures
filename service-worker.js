@@ -1,17 +1,62 @@
-const CACHE='claire-adventures-v2';
-const CORE=['./','index.html','styles.css','app.js','manifest.webmanifest','stories.json','apple-touch-icon.png'];
-self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)));self.skipWaiting()});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});
-self.addEventListener('fetch',e=>{
-  const u=new URL(e.request.url);
-  if(e.request.method!=='GET'||u.origin!==location.origin)return;
-  if(u.pathname.endsWith('/stories.json')||u.pathname.endsWith('/app.js')||u.pathname.endsWith('/styles.css')){
-    e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r}).catch(()=>caches.match(e.request)));
-    return;
-  }
-  if(/\/stories\/.+\.(jpg|jpeg|png|webp)$/i.test(u.pathname)){
-    e.respondWith(fetch(e.request,{cache:'no-store'}).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r}).catch(()=>caches.match(e.request)));
-    return;
-  }
-  e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request)));
+/* Version 3: Treat Time and network-first updates with an offline fallback. */
+const CACHE = 'claire-adventures-v3-treat-time';
+const ROOT = new URL('./', self.location.href);
+const CORE = ['index.html', 'styles.css', 'app.js', 'stories.json',
+  'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
+  'treat-time.html', 'treat-time.css', 'treat-time.js', 'site-update.js'];
+
+self.addEventListener('install', event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    await cache.addAll(CORE.map(path => new Request(new URL(path, ROOT), {cache: 'reload'})));
+    await self.skipWaiting();
+  })());
+});
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    // Retain previously saved story pages. Do not touch other sites' caches.
+    for (const name of ['claire-adventures-v1', 'claire-adventures-v2']) {
+      if (!(await caches.has(name))) continue;
+      const old = await caches.open(name);
+      let copied = true;
+      for (const request of await old.keys()) {
+        const url = new URL(request.url);
+        if (url.origin === ROOT.origin && url.pathname.startsWith(ROOT.pathname + 'stories/')) {
+          const response = await old.match(request);
+          if (response?.ok) {
+            try { await cache.put(url.origin + url.pathname, response); }
+            catch (_) { copied = false; }
+          }
+        }
+      }
+      if (copied) await caches.delete(name);
+    }
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+  if (event.request.method !== 'GET' || url.origin !== ROOT.origin || !url.pathname.startsWith(ROOT.pathname)) return;
+  // Normalize timestamps so the offline catalog is reusable after a refresh.
+  const key = url.origin + (url.pathname === ROOT.pathname ? ROOT.pathname + 'index.html' : url.pathname);
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    try {
+      const response = await fetch(event.request, {cache: 'no-store'});
+      if (response.ok) {
+        try { await cache.put(key, response.clone()); } catch (_) { /* Storage can be full. */ }
+        return response;
+      }
+      return (await cache.match(key)) || response;
+    } catch (_) {
+      const saved = await cache.match(key);
+      if (saved) return saved;
+      if (event.request.mode === 'navigate') {
+        return new Response('<h1>You are offline</h1><p>Connect to the internet once to save this page for next time.</p>', {status: 503, headers: {'Content-Type': 'text/html; charset=utf-8'}});
+      }
+      return Response.error();
+    }
+  })());
 });
