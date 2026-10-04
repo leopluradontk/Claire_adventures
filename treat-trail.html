@@ -8,17 +8,17 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="treat-trail/style.css?v=beta2">
-  <link rel="stylesheet" href="treat-trail/beta2.css?v=beta2">
-  <script src="site-update.js?v=3" defer></script>
-  <script type="module" src="treat-trail/game.js?v=beta2"></script>
-  <title>Treat Trail Beta 2 | Claire's Adventures</title>
+  <link rel="stylesheet" href="treat-trail/style.css?v=1.0.0">
+  <link rel="stylesheet" href="treat-trail/release.css?v=1.0.0">
+  <script src="site-update.js?v=4" defer></script>
+  <script type="module" src="treat-trail/game.js?v=1.0.0"></script>
+  <title>Treat Trail 1.0 | Claire's Adventures</title>
 </head>
 <body>
 <main class="trail-shell">
   <header class="trail-header">
     <a class="nav-button" id="storiesLink" href="./" aria-label="Back to stories">&#8249; <span>Stories</span></a>
-    <div class="brand"><span class="eyebrow">CLAIRE &amp; FRIENDS</span><h1>Treat Trail <small>BETA 2</small></h1></div>
+    <div class="brand"><span class="eyebrow">CLAIRE &amp; FRIENDS</span><h1>Treat Trail <small>VERSION 1.0</small></h1></div>
     <div class="toolbar">
       <button class="nav-button tool-button" id="muteButton" aria-label="Mute all sound" aria-pressed="false" title="Mute all sound">&#9835;</button>
       <button class="nav-button tool-button" id="settingsButton" aria-label="Game settings" title="Settings">&#9881;</button>
@@ -29,16 +29,16 @@
     <canvas id="gameCanvas" aria-label="Move Claire with Left and Right; press Jump to collect treats. Her friends follow her." role="img"></canvas>
     <div class="hud" id="hud" aria-hidden="true">
       <div class="treat-counter"><span class="cookie-icon">&#127850;</span><strong id="treatCount">0 <small>/ 40</small></strong><span>treats</span></div>
-      <div class="route"><span id="routeName">Sunshine Meadow</span><div class="route-track"><i id="progressFill"></i></div><span class="route-goal">Picnic &#9825;</span></div>
+      <div class="route"><span id="routeName">Sunshine Meadow</span><div class="route-track"><i id="progressFill"></i></div><span class="route-goal">Finish &#9825;</span></div>
     </div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <div id="celebrateBanner" class="celebrate-banner" hidden><span class="dialog-badge">FOUR FRIENDS. ONE HAPPY FINISH.</span><h2 id="celebrateTitle">We made it!</h2><p>Time for a little happy dance.</p><button id="skipCelebration" class="text-button">Show my treats &#8250;</button></div>
     <div class="overlay" id="overlay">
       <section class="dialog menu-dialog" id="levelPanel" role="dialog" aria-modal="true" aria-labelledby="levelTitle">
-        <span class="dialog-badge">TREAT TRAIL / BETA 2</span><h2 id="levelTitle">Pick an adventure</h2>
-        <p class="menu-intro">Little hops. Yummy treats. Best friends.</p>
+        <span class="dialog-badge">TREAT TRAIL / VERSION 1.0</span><h2 id="levelTitle">Pick an adventure</h2>
+        <p class="menu-intro">Four trails. New outfits. Four happy tunes. Scroll to explore.</p>
         <div id="levelCards" class="level-cards"></div>
-        <p class="little-note">More trails can join the map later. Every level is open to play.</p>
+        <p class="little-note">Choose any adventure. Every trail is open from the start.</p>
         <p class="save-note" id="menuSaveNote">Progress and stars stay on this device.</p>
         <a href="./" class="text-button">Back to Stories</a>
       </section>
@@ -66,14 +66,14 @@
   <section id="resultBar" class="result-bar" hidden aria-labelledby="resultTitle" aria-live="polite">
     <div><span class="dialog-badge">PICNIC CLUB / LEVEL COMPLETE</span><h2 id="resultTitle">Picnic time!</h2><p id="resultText"></p><p id="bestText" class="save-note"></p></div>
     <div class="result-stars" id="resultStars"></div>
-    <div class="result-actions"><button class="primary-button" id="replayButton">Play again</button><button class="nav-button" id="levelsButton">Level menu</button></div>
+    <div class="result-actions"><button class="primary-button" id="nextLevelButton" hidden>Next adventure</button><button class="primary-button" id="replayButton">Play again</button><button class="nav-button" id="levelsButton">Level menu</button></div>
   </section>
   <section class="controls" id="controls" aria-label="Game controls">
     <div class="direction-controls"><button class="control" data-control="left" aria-label="Move left" disabled><b>&#8592;</b><span>Left</span></button><button class="control" data-control="right" aria-label="Move right" disabled><b>&#8594;</b><span>Right</span></button></div>
     <div class="control-hint"><strong>Friends stick together.</strong><span>Keyboard: &#8592; &#8594; + Space</span><span class="portrait-tip">Try turning your iPad sideways.</span></div>
     <button class="control jump-control" data-control="jump" aria-label="Jump. Hold for a higher jump." disabled><b>&#8593;</b><span>Jump</span></button>
   </section>
-  <footer class="trail-footer"><span id="saveStatus">Progress stays on this device</span><span id="offlineStatus">Beta 2</span></footer>
+  <footer class="trail-footer"><span id="saveStatus">Progress stays on this device</span><span id="offlineStatus">1.0</span></footer>
   <noscript><p>This game needs JavaScript. <a href="./">Return to Stories</a>.</p></noscript>
 </main>
 </body>

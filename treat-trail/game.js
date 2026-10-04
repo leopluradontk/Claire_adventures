@@ -1,10 +1,10 @@
-/* Treat Trail Beta 2: menus, saves, audio and celebration; original physics retained. */
-import {LEVELS, validateLevel} from './levels.js?v=beta2';
-import {TrailGame, STEP} from './engine.js?v=beta2';
-import {TrailRenderer, loadArt} from './renderer.js?v=beta2';
-import {CelebrationRenderer} from './celebration.js?v=beta2';
-import {ProgressStore, starsFor} from './progress.js?v=beta2';
-import {TrailAudio} from './audio.js?v=beta2';
+/* Treat Trail 1.0: menus, saves, audio and celebration; original physics retained. */
+import {LEVELS, validateLevel} from './levels.js?v=1.0.0';
+import {TrailGame, STEP} from './engine.js?v=1.0.0';
+import {TrailRenderer, loadArt} from './renderer.js?v=1.0.0';
+import {CelebrationRenderer} from './celebration.js?v=1.0.0';
+import {ProgressStore, starsFor} from './progress.js?v=1.0.0';
+import {TrailAudio} from './audio.js?v=1.0.0';
 const $=id=>document.getElementById(id), controls=[...document.querySelectorAll('[data-control]')];
 const store=new ProgressStore(), settings=store.settings();
 const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -50,23 +50,25 @@ $('primaryButton').addEventListener('click',()=>primaryAction?.());
 $('secondaryButton').addEventListener('click',()=>secondaryAction?.());
 $('thirdButton').addEventListener('click',()=>thirdAction?.());
 function stars(n){const el=document.createElement('span');el.className='stars';el.setAttribute('aria-label',n+' of 3 stars');for(let i=0;i<3;i++){const s=document.createElement('span');s.textContent='\u2605';s.setAttribute('aria-hidden','true');if(i<n)s.className='earned';el.append(s);}return el;}
-function selectLevel(next){level=validateLevel(next);game=new TrailGame(level);render.clear();render.camera=0;activeRun=false;score();$('routeName').textContent=level.name;$('progressFill').style.transform='scaleX(0)';}
+function selectLevel(next){level=validateLevel(next);game=new TrailGame(level);render.clear();render.camera=0;activeRun=false;document.body.dataset.theme=level.theme||'meadow';score();$('routeName').textContent=level.name;$('progressFill').style.transform='scaleX(0)';}
 function showLevels(){
   saveRun();activeRun=false;setMode('levels');panel('levelPanel');render.clear();
   // The menu preview is a fresh scene; saved data remains in local storage.
   game=new TrailGame(level);render.camera=0;score();$('levelCards').replaceChildren();
   for(const l of LEVELS){
-    const saved=store.load(l),best=store.best(l),card=document.createElement('article');card.className='level-card';
+    const saved=store.load(l),best=store.best(l),card=document.createElement('article');card.className='level-card';card.dataset.theme=l.theme||'meadow';
     const picture=document.createElement('canvas');picture.className='level-picture';picture.setAttribute('aria-hidden','true');
     const info=document.createElement('div');info.className='level-info';
     const number=document.createElement('span');number.className='level-number';number.textContent='LEVEL '+(LEVELS.indexOf(l)+1);
     const name=document.createElement('h3');name.textContent=l.name;
+    const description=document.createElement('p');description.className='level-description';description.textContent=l.description||'';
+    const outfit=document.createElement('p');outfit.className='outfit-note';outfit.textContent=l.outfit||'';
     const meta=document.createElement('div');meta.className='level-meta';meta.append(stars(best.stars));
     const label=document.createElement('span');label.className='best-label';label.textContent=best.complete?`Best: ${best.count} / ${l.treats.length} treats`:`${l.treats.length} treats to discover`;meta.append(label);
     const note=document.createElement('p');note.className='little-note';note.textContent=saved?`${saved.collected.length} treats saved. Continue from your last safe spot.`:'1 star: finish | 2: '+Math.ceil(l.treats.length*.75)+' treats | 3: all '+l.treats.length;
     const button=document.createElement('button');button.className='primary-button';button.textContent=saved?'Continue Adventure':"Let's go!";button.dataset.startLevel=l.id;
     button.addEventListener('click',()=>startLevel(l,Boolean(saved)));
-    info.append(number,name,meta,note,button);
+    info.append(number,name,description,outfit,meta,note,button);
     if(saved){const fresh=document.createElement('button');fresh.className='text-button start-again';fresh.textContent='Start Again';fresh.addEventListener('click',()=>confirmNew(l,showLevels));info.append(fresh);}
     card.append(picture,info);$('levelCards').append(card);
     requestAnimationFrame(()=>{if(picture.isConnected){const preview=new TrailRenderer(picture);preview.resize();preview.view=900;preview.scale=preview.cssW/900;preview.ox=0;preview.oy=preview.cssH-520*preview.scale;preview.draw(new TrailGame(l),0);}});
@@ -101,19 +103,23 @@ function confirmNew(l,cancel){
 function finish(){
   activeRun=false;store.finish(game);$('saveStatus').textContent='Adventure complete | Stars saved on this device';storageStatus();render.begin(game);setMode('celebrating');
   $('celebrateTitle').textContent=game.collected.size===level.treats.length?'Every treat found!':'We made it!';
-  clearTimeout(toastTimer);$('toast').classList.remove('show');audio.victory(game.collected.size===level.treats.length);
+  clearTimeout(toastTimer);$('toast').classList.remove('show');audio.victory(game.collected.size===level.treats.length,level.music);
   $('skipCelebration').focus({preventScroll:true});
 }
 function showResults(){
   setMode('finished');const n=starsFor(game.collected.size,level.treats.length),best=store.best(level);
-  $('resultTitle').textContent=n===3?'Every treat found!':'Picnic time!';
+  $('resultTitle').textContent=n===3?'Every treat found!':'Adventure complete!';
   $('resultText').textContent=`${game.collected.size} of ${level.treats.length} treats. Well done, Claire!`;
   $('bestText').textContent=store.available?`Best on this device: ${best.count} treats. ${best.stars} of 3 stars.`:'This run is complete. Device saving is unavailable.';
-  $('resultStars').replaceChildren(stars(n));$('replayButton').focus({preventScroll:true});
+  $('resultStars').replaceChildren(stars(n));
+  const next=LEVELS[LEVELS.indexOf(level)+1];$('nextLevelButton').hidden=!next;
+  $('nextLevelButton').textContent=next?'Next: '+next.name:'All trails explored';
+  (next?$('nextLevelButton'):$('replayButton')).focus({preventScroll:true});
 }
 $('skipCelebration').addEventListener('click',()=>{render.skip();showResults();});
 $('replayButton').addEventListener('click',()=>startLevel(level,false));
 $('levelsButton').addEventListener('click',showLevels);
+$('nextLevelButton').addEventListener('click',()=>{const next=LEVELS[LEVELS.indexOf(level)+1];if(next)startLevel(next,Boolean(store.load(next)));});
 $('pauseButton').addEventListener('click',pause);
 function effectiveGentle(){return settings.gentle||motion.matches;}
 function applySettings(persist=true){
@@ -170,14 +176,14 @@ window.addEventListener('blur',background);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)background();});
 window.addEventListener('pagehide',background);
 $('storiesLink').addEventListener('click',()=>{saveRun();audio.pause();});
-document.addEventListener('storybook:offline-ready',()=>{$('offlineStatus').textContent='Beta 2 | Saved for offline play';});
+document.addEventListener('storybook:offline-ready',()=>{$('offlineStatus').textContent='Version 1.0 | Saved for offline play';});
 document.addEventListener('storybook:update-ready',()=>{saveRun();toast('Update ready for next time. Your progress is saved.');});
 function handleEvents(){
   for(const e of game.takeEvents()){
     if(e.type==='jump')audio.fx('jump');
     else if(e.type==='treat'){score();saveRun();audio.fx('treat',game.collected.size);const c=document.querySelector('.treat-counter');c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');}
     else if(e.type==='checkpoint'){saveRun();audio.fx('checkpoint');toast('A safe spot! Your adventure is saved.');}
-    else if(e.type==='rescue'){render.camera=Math.max(0,game.player.x-render.view*.5);audio.fx('rescue');toast('A little splash! Treats kept. Back to your safe spot.');}
+    else if(e.type==='rescue'){render.camera=Math.max(0,game.player.x-render.view*.5);audio.fx('rescue');toast(level.theme==='snow'?'A soft landing! Treats kept. Back to your safe spot.':'A little splash! Treats kept. Back to your safe spot.');}
     else if(e.type==='finish')finish();
   }
 }
@@ -193,15 +199,16 @@ function frame(now){
   render.draw(game,dt);requestAnimationFrame(frame);
 }
 new ResizeObserver(()=>render.resize()).observe($('gameCanvas'));window.addEventListener('resize',()=>render.resize());
+document.body.dataset.theme=level.theme||'meadow';
 setMode('loading');message('Getting ready...','Your friends are putting on their walking shoes.',['Loading',()=>{}]);$('primaryButton').disabled=true;
 (async()=>{
   try{await loadArt();render.resize();loaded=true;showLevels();
-    if(document.documentElement.dataset.offlineReady==='true')$('offlineStatus').textContent='Beta 2 | Saved for offline play';
+    if(document.documentElement.dataset.offlineReady==='true')$('offlineStatus').textContent='Version 1.0 | Saved for offline play';
     last=performance.now();requestAnimationFrame(frame);
   }catch(error){console.error(error);setMode('error');message('A little hiccup','Please reload while online to finish loading the game.',['Reload',()=>location.reload()]);}
 })();
 // Explicit opt-in test hooks; absent during ordinary play.
 if(new URLSearchParams(location.search).has('debug'))window.trailDebug={get game(){return game;},render,audio,store,settings,
   get mode(){return mode;},get keys(){return [...keys];},get pointers(){return [...pointers.values()];},
-  play:()=>startLevel(level,false),pause,showLevels,finish,handleEvents,saveRun,applySettings,
+  startLevel,play:()=>startLevel(level,false),pause,showLevels,finish,handleEvents,saveRun,applySettings,
   finishForTest(count=40){game.collected=new Set(Array.from({length:Math.min(count,level.treats.length)},(_,i)=>i));Object.assign(game.player,level.goal,{vx:0,vy:0,grounded:true});game.finished=true;finish();score();}};

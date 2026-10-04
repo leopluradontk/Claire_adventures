@@ -1,3 +1,4 @@
+import {THEMES,themeFor,drawBackdrop,drawDressing,drawGoal,dressSprite} from './themes.js?v=1.0.0';
 /* Canvas scenery and vector characters. No image downloads or external libraries. */
 const TAU=Math.PI*2;
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -43,12 +44,14 @@ export class TrailRenderer {
  }
  draw(game,dt=0) {
   const c=this.ctx,p=game.player,l=game.level,t=game.time;
+  this.theme=l.theme||'meadow';const palette=themeFor(this.theme);this.palette=palette;
   const wanted=clamp(p.x-this.view*.5,0,l.width-this.view);
   if(Math.abs(wanted-this.camera)>this.view*.7)this.camera=wanted;
   else this.camera+=(wanted-this.camera)*(1-Math.exp(-8*(dt||.016)));
-  c.setTransform(this.dpr,0,0,this.dpr,0,0);c.clearRect(0,0,this.cssW,this.cssH);c.fillStyle='#cae8ec';c.fillRect(0,0,this.cssW,this.cssH);c.fillStyle='#ead4b4';c.fillRect(0,this.oy+600*this.scale,this.cssW,this.cssH);
+  c.setTransform(this.dpr,0,0,this.dpr,0,0);c.clearRect(0,0,this.cssW,this.cssH);c.fillStyle=palette.sky;c.fillRect(0,0,this.cssW,this.cssH);c.fillStyle=palette.soil;c.fillRect(0,this.oy+600*this.scale,this.cssW,this.cssH);
   c.translate(this.ox,this.oy);c.scale(this.scale,this.scale);
   c.save();c.beginPath();c.rect(0,0,this.view,600);c.clip();
+  if(!drawBackdrop(c,this.theme,this.view,this.camera,t,this.gentle)){
   const sky=c.createLinearGradient(0,0,0,480);sky.addColorStop(0,'#cae8ec');sky.addColorStop(.7,'#eff6dd');sky.addColorStop(1,'#fbf3d6');c.fillStyle=sky;c.fillRect(0,0,this.view,600);
   ellipse(c,this.view-118,98,50,50,'#fff0b3');ellipse(c,this.view-118,98,37,37,'#fff7d1');
   for(let i=-1;i<8;i++)cloud(c,i*330-((this.camera*.12)%330),98+(i%3)*27,.9+(i%2)*.2);
@@ -56,9 +59,10 @@ export class TrailRenderer {
   for(let i=-1;i<11;i++)tree(c,i*255-((this.camera*.45)%255),449,.82+(i%2)*.18,i%2);
   // A few distant birds and butterflies keep the sky lively, without distracting.
   for(let i=0;i<3;i++){const bx=150+i*335-((this.camera*.2)%220),by=200+i*24;line(c,[[bx-7,by],[bx,by-4],[bx+7,by]],'#9dbeb2',2);}
+  }
   c.save();c.translate(-this.camera,0);
   // Rippling water stays below the safe grassy banks.
-  box(c,0,480,l.width,120,0,'#94cddd');
+  box(c,0,480,l.width,120,0,palette.water);
   for(let x=Math.floor(this.camera/85)*85;x<this.camera+this.view;x+=85)line(c,[[x+Math.sin(t*1.7)*4,504],[x+32,504]],'#cfeef1',3);
   for(const s of l.ground) this.surface(c,s,true);
   for(const s of l.platforms) this.surface(c,s,false);
@@ -92,19 +96,21 @@ export class TrailRenderer {
  }
  surface(c,s,ground) {
   if(s.x+s.w<this.camera-50||s.x>this.camera+this.view+50)return;
-  const bottom=ground?625:s.y+34;
-  box(c,s.x,s.y,s.w,bottom-s.y,ground?12:11,ground?'#daba8f':'#d7b789');
+  const bottom=ground?625:s.y+34, palette=this.palette||themeFor('meadow');
+  box(c,s.x,s.y,s.w,bottom-s.y,ground?12:11,ground?palette.soil:(this.theme==='snow'?'#c7d9ed':this.theme==='autumn'?'#dbb778':this.theme==='beach'?'#ccac81':'#d7b789'));
   if(!ground)box(c,s.x+7,s.y+22,s.w-14,14,7,'#bf9d73');
-  box(c,s.x-2,s.y-2,s.w+4,14,7,'#71ae8e');box(c,s.x,s.y-4,s.w,7,4,'#9ccc9b');
+  box(c,s.x-2,s.y-2,s.w+4,14,7,palette.edge);box(c,s.x,s.y-4,s.w,7,4,palette.top);
   c.fillStyle='#bf9f77';for(let x=Math.max(s.x+12,Math.floor(this.camera/37)*37);x<s.x+s.w-6&&x<this.camera+this.view+30;x+=37){ellipse(c,x,s.y+27,3,2,'#c6a477');if(ground){ellipse(c,x+15,s.y+64,4,2,'#c6a477');ellipse(c,x-8,s.y+111,3,2,'#c6a477');}}
  }
  flower(c,x,y,kind,t) {
+  if(this.theme!=='meadow'){drawDressing(c,this.theme,x,y,kind,t);return;}
   const shift=Math.sin(t*1.4+x)*1.6;
   line(c,[[x,y],[x+shift,y-15]],'#78a27b',2);ellipse(c,x-4,y-6,5,2,'#9db987');
   for(let i=0;i<5;i++)ellipse(c,x+shift+Math.cos(i*TAU/5)*4,y-17+Math.sin(i*TAU/5)*4,3.5,3.5,['#f8d4de','#fff3c9','#dfcce8'][kind]);
   ellipse(c,x+shift,y-17,2.5,2.5,'#e7bd6c');
  }
  picnic(c,x,y,t) {
+  if(drawGoal(c,this.theme,x,y,t))return;
   // The finish cottage and picnic blanket.
   box(c,x+8,y-168,182,169,14,'#fff4db','#c4a082');
   c.beginPath();c.moveTo(x-12,y-165);c.lineTo(x+99,y-246);c.lineTo(x+211,y-165);c.closePath();c.fillStyle='#d9a4ac';c.fill();c.strokeStyle='#af808c';c.lineWidth=3;c.stroke();
@@ -125,12 +131,12 @@ export class TrailRenderer {
   if(kind==='claire') {
     const swing=p.grounded&&moving?Math.sin(t*13)*.55:(!p.grounded ? .38 : 0);
     for(const [side,a] of [[-1,swing],[1,-swing]]){
-      c.save();c.translate(side*7,-20);c.rotate(a);box(c,-4,0,8,15,4,'#f2c5af');box(c,-5,11,13,9,4,'#a786ba','#6e5985');box(c,-4,12,11,3,1,'#ded0eb');c.restore();
+      c.save();c.translate(side*7,-20);c.rotate(a);box(c,-4,0,8,15,4,this.theme==='snow'?'#9993ba':this.theme==='autumn'?'#7797ad':'#f2c5af');box(c,-5,11,13,9,4,(this.palette||THEMES.meadow).shoe,'#6e5985');box(c,-4,12,11,3,1,'#ded0eb');c.restore();
     }
-    if(art.claire)c.drawImage(art.claire,-39,-99,78,86);
+    const sprite=art['claire-'+this.theme]||art.claire;if(sprite)c.drawImage(sprite,-39,-99,78,86);
   } else {
     const s=p.grounded&&moving?1+Math.sin(t*13)*.025:1;
-    c.scale(1/s,s); if(art[kind])c.drawImage(art[kind],-33,-57,66,57);
+    c.scale(1/s,s); const sprite=art[kind+'-'+this.theme]||art[kind];if(sprite)c.drawImage(sprite,-33,-57,66,57);
   }
   c.restore();
  }
@@ -138,5 +144,9 @@ export class TrailRenderer {
 
 const SPRITES = {"pusheen":"<svg viewBox=\"0 0 260 225\" xmlns=\"http://www.w3.org/2000/svg\" focusable=\"false\"> <g stroke=\"#73616a\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"> <g class=\"tail\"><path d=\"M202 176c41 10 47-26 27-32-11-3-11 13-22 5\" fill=\"#b8afaf\"></path><path d=\"m226 144-2 16m8 6-15-3\" fill=\"none\" stroke-width=\"8\"></path></g> <path d=\"M47 99 50 48q4-17 27 6c34-13 68-14 99-1q24-23 30-6l5 54c30 43 27 91-14 102H66C24 191 22 147 47 99Z\" fill=\"#c5bebe\"></path> <g stroke=\"none\" fill=\"#928489\"><path d=\"m103 48 3 23q9 10 15-1l-1-27Z\"></path><path d=\"m133 43 1 24q8 12 15 0l-1-22Z\"></path><path d=\"M36 122h20q9 6 0 12H31Zm-5 27h20q9 6 0 12H29Z\"></path></g> <path d=\"m53 69 1-13 12 8m118-1 12-8 4 14\" stroke=\"none\" fill=\"#e5b1bd\"></path> <g class=\"eyes\" fill=\"#4d3a43\" stroke=\"none\"><ellipse cx=\"93\" cy=\"109\" rx=\"6\" ry=\"7\"></ellipse><ellipse cx=\"164\" cy=\"109\" rx=\"6\" ry=\"7\"></ellipse></g> <g class=\"cheeks\" fill=\"#eda6b7\" stroke=\"none\" opacity=\".65\"><ellipse cx=\"73\" cy=\"126\" rx=\"13\" ry=\"7\"></ellipse><ellipse cx=\"183\" cy=\"126\" rx=\"13\" ry=\"7\"></ellipse></g> <path class=\"mouth\" d=\"m121 117 7 4 7-4m-7 4v5q-10 12-18 0m18 0q10 12 18 0\" fill=\"none\" stroke=\"#614853\" stroke-width=\"3\"></path> <path d=\"m51 113-24-4m24 15-26 2m183-12 24-4m-24 15 24 2\" fill=\"none\"></path> <path d=\"M76 191q-3 17 15 14m73-14q3 17-15 14\" fill=\"#c5bebe\"></path> <path d=\"M100 155q10 10 17 1m28 0q11 9 18-1\" fill=\"none\" stroke=\"#94868b\"></path> </g> </svg> ","kitty":"<svg viewBox=\"0 0 260 225\" xmlns=\"http://www.w3.org/2000/svg\" focusable=\"false\"> <g stroke=\"#685261\" stroke-width=\"3.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"> <path d=\"M91 158q-15 11-14 25 14 9 30-2m62-23q15 11 14 25-14 9-30-2\" fill=\"#fffdfb\"></path> <path d=\"M100 161q-7 23-17 35 39 21 89 0-13-19-16-35\" fill=\"#efa4cb\"></path> <path d=\"M98 198q-19 0-20 13 1 9 26 6l6-17m41-2q20 0 21 13-1 9-26 6l-5-17\" fill=\"#fffdfb\"></path> <g class=\"wave-arm\"><path d=\"M168 176q13 9 20-2l-1-13q-11-12-16-1Z\" fill=\"#fffdfb\"></path></g> <path d=\"M56 79 54 36q5-13 35 10 32-7 66 0 34-25 39-10l3 44c33 23 31 76-15 89-27 9-88 9-116-2-49-17-42-66-10-88Z\" fill=\"#fffdfb\"></path> <g class=\"eyes\" fill=\"#403640\" stroke=\"none\"><ellipse cx=\"93\" cy=\"116\" rx=\"5.5\" ry=\"8\"></ellipse><ellipse cx=\"158\" cy=\"116\" rx=\"5.5\" ry=\"8\"></ellipse></g> <ellipse cx=\"126\" cy=\"135\" rx=\"8\" ry=\"6\" fill=\"#f8cf62\" stroke-width=\"2\"></ellipse> <g class=\"cheeks\" fill=\"#f8c5d8\" stroke=\"none\" opacity=\".5\"><ellipse cx=\"73\" cy=\"140\" rx=\"12\" ry=\"6\"></ellipse><ellipse cx=\"178\" cy=\"140\" rx=\"12\" ry=\"6\"></ellipse></g> <path d=\"m58 112-29-7m26 24-30 1m34 15-26 8m162-41 26-7m-24 24 29 1m-31 15 25 8\" fill=\"none\"></path> <g fill=\"#ed7fad\" stroke=\"#a6507c\"><path d=\"M172 57q-33-41-40-5t33 17q14 34 30 7t-18-20Z\"></path><ellipse cx=\"170\" cy=\"60\" rx=\"11\" ry=\"12\" fill=\"#ffb4d3\"></ellipse></g> <path d=\"M123 181c-12-11-21 4 5 16 26-12 17-27 5-16Z\" fill=\"#fff2f8\" stroke=\"none\"></path> </g> </svg> ","raspberry":"<svg viewBox=\"0 0 260 225\" xmlns=\"http://www.w3.org/2000/svg\" focusable=\"false\"> <g stroke=\"#b87991\" stroke-width=\"3.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"> <path d=\"M182 185q41 16 46-7 0-18-29-20\" fill=\"#f8ccda\"></path> <g class=\"gill gill-left\" fill=\"#f3a9c2\"><path d=\"M67 107C27 98 20 64 35 61S69 82 73 95Z\"></path><path d=\"M63 131c-50-3-56-30-39-34s43 13 45 23Z\"></path><path d=\"M65 148c-43 26-60-3-43-14s36-4 43 5Z\"></path></g> <g class=\"gill gill-right\" fill=\"#f3a9c2\"><path d=\"M193 107c40-9 47-43 32-46s-34 21-38 34Z\"></path><path d=\"M197 131c50-3 56-30 39-34s-43 13-45 23Z\"></path><path d=\"M195 148c43 26 60-3 43-14s-36-4-43 5Z\"></path></g> <path d=\"M63 91q8-47 66-48 59 0 67 47c19 51 16 104-27 111H91C42 198 40 139 63 91Z\" fill=\"#ffe5e9\"></path> <path d=\"M79 188q-18 1-15 16 6 11 24 3m91-19q18 1 15 16-6 11-24 3\" fill=\"#f8cfdb\"></path> <g class=\"eyes\" fill=\"#4d3943\" stroke=\"none\"><ellipse cx=\"91\" cy=\"113\" rx=\"6\" ry=\"7\"></ellipse><ellipse cx=\"166\" cy=\"113\" rx=\"6\" ry=\"7\"></ellipse></g> <g class=\"cheeks\" fill=\"#f5b3c9\" stroke=\"none\" opacity=\".7\"><ellipse cx=\"75\" cy=\"130\" rx=\"13\" ry=\"7\"></ellipse><ellipse cx=\"182\" cy=\"130\" rx=\"13\" ry=\"7\"></ellipse></g> <path class=\"mouth\" d=\"M117 126q11 17 23 0\" fill=\"none\" stroke=\"#7f5267\" stroke-width=\"3\"></path> <path d=\"M101 162q-8 12 4 15m50-15q8 12-4 15\" fill=\"none\"></path> <ellipse cx=\"128\" cy=\"171\" rx=\"20\" ry=\"13\" fill=\"#fff1f2\" stroke=\"none\"></ellipse> </g> </svg> ","claire":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 176\"><g stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M26 115C2 84 15 33 50 26 75 4 130 24 139 63c18 33 5 80-17 90H35Z\" fill=\"#845339\" stroke=\"#684335\" stroke-width=\"3\"/><g fill=\"#9c6240\" stroke=\"#724837\" stroke-width=\"3\"><circle cx=\"28\" cy=\"80\" r=\"14\"/><circle cx=\"22\" cy=\"103\" r=\"14\"/><circle cx=\"32\" cy=\"126\" r=\"15\"/><circle cx=\"24\" cy=\"143\" r=\"12\"/><circle cx=\"130\" cy=\"93\" r=\"14\"/><circle cx=\"137\" cy=\"116\" r=\"13\"/><circle cx=\"130\" cy=\"139\" r=\"13\"/></g><path d=\"m59 119-22 28 12 10 17-18m36-20 22 22-10 13-20-15\" fill=\"#f6c9b0\" stroke=\"#b78272\" stroke-width=\"2\"/><path d=\"M60 116h39l15 44q-30 15-61 0Z\" fill=\"#e5a1c4\" stroke=\"#ad729f\" stroke-width=\"3\"/><path d=\"m65 122 11 10 10-10 10 10 6-12\" fill=\"#fff4e9\"/><path d=\"m72 144 7-5 7 5-7 9Z\" fill=\"#fff4e9\"/><ellipse cx=\"80\" cy=\"81\" rx=\"47\" ry=\"46\" fill=\"#f8d2b8\" stroke=\"#b38267\" stroke-width=\"2\"/><path d=\"M31 74c-5-43 43-57 61-45 33-10 41 23 39 45-17-8-28-18-36-30-13 23-36 28-64 30Z\" fill=\"#925a3b\" stroke=\"#684335\" stroke-width=\"3\"/><path d=\"M40 51Q59 27 82 34M104 36q15 6 18 21\" fill=\"none\" stroke=\"#b98251\" stroke-width=\"5\"/><ellipse cx=\"63\" cy=\"83\" rx=\"10\" ry=\"14\" fill=\"#4c342f\"/><ellipse cx=\"102\" cy=\"82\" rx=\"10\" ry=\"14\" fill=\"#4c342f\"/><ellipse cx=\"66\" cy=\"79\" rx=\"4\" ry=\"5\" fill=\"#fffaf1\"/><ellipse cx=\"105\" cy=\"78\" rx=\"4\" ry=\"5\" fill=\"#fffaf1\"/><ellipse cx=\"49\" cy=\"98\" rx=\"9\" ry=\"5\" fill=\"#edaaa7\"/><ellipse cx=\"118\" cy=\"97\" rx=\"9\" ry=\"5\" fill=\"#edaaa7\"/><path d=\"M73 103q11 17 23-1\" fill=\"#a25350\" stroke=\"#874340\" stroke-width=\"2\"/><path d=\"M79 111q7-6 13-1\" fill=\"#e28d98\"/><g fill=\"#b595d7\" stroke=\"#8262a8\" stroke-width=\"2\"><path d=\"M41 35C8 7 14 62 41 46 56 76 80 28 47 35Z\"/><ellipse cx=\"44\" cy=\"40\" rx=\"8\" ry=\"9\" fill=\"#d9c5ee\"/></g></g></svg>"};
 export async function loadArt() {
- await Promise.all(Object.entries(SPRITES).map(([name,svg])=>new Promise((resolve,reject)=>{ const image=new Image();image.onload=()=>{art[name]=image;resolve();};image.onerror=()=>reject(new Error("Character art could not load"));image.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); })));
+ const jobs=[];
+ for(const [name,svg] of Object.entries(SPRITES))for(const theme of Object.keys(THEMES)){
+  jobs.push(new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{art[name+'-'+theme]=image;if(theme==='meadow')art[name]=image;resolve();};image.onerror=()=>reject(new Error('Character art could not load'));image.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(dressSprite(name,svg,theme));}));
+ }
+ await Promise.all(jobs);
 }

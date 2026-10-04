@@ -1,12 +1,30 @@
 /* Original, softly synthesized music. Audio begins only after a play/continue tap.
    Level.music selects a track; additional levels can have independent melodies. */
 export const TRACKS = Object.freeze({
-  meadow: {bpm: 102, wave: 'sine', root: 60,
+  meadow: {name:'Sunshine Waltz',bpm:102,wave:'sine',root:60,gate:.31,accent:.025,
     melody: [12,0,16,19,21,19,16,0,14,17,21,0,19,17,14,0,
       12,16,19,24,23,19,16,0,14,0,17,19,16,14,12,0,
       21,0,19,16,17,21,24,0,23,19,17,14,16,19,24,0,
       21,19,16,12,14,17,19,0,16,0,14,11,12,0,0,0],
-    chords: [[0,4,7],[-3,0,4],[-5,0,4],[-7,-3,0],[-5,-1,2],[-3,0,4],[-5,-1,2],[-7,-3,0]]}
+    chords: [[0,4,7],[-3,0,4],[-5,0,4],[-7,-3,0],[-5,-1,2],[-3,0,4],[-5,-1,2],[-7,-3,0]]},
+  autumn:{name:'Pumpkin Parade',bpm:112,wave:'triangle',root:62,gate:.17,accent:.018,
+    melody:[12,15,19,0,22,19,15,0,17,19,22,24,22,19,17,0,
+      12,0,15,17,19,15,12,0,10,14,17,0,19,17,14,0,
+      24,22,19,0,22,19,17,15,17,0,19,22,24,22,19,0,
+      15,17,19,0,17,14,10,0,12,15,19,15,12,0,0,0],
+    chords:[[0,3,7],[-5,-2,2],[-3,0,4],[-7,-3,0],[0,3,7],[-5,-2,2],[-3,0,4],[-7,-3,0]],pulse:true},
+  snow:{name:'Snowflake Music Box',bpm:78,wave:'sine',root:65,gate:.72,accent:.055,
+    melody:[19,0,24,0,23,21,19,0,17,0,21,0,19,17,16,0,
+      12,0,16,19,24,0,23,0,21,19,17,0,16,14,12,0,
+      24,0,28,0,26,24,23,0,21,0,24,0,23,21,19,0,
+      17,19,21,0,19,16,14,0,12,0,19,0,12,0,0,0],
+    chords:[[0,4,7],[-5,-1,2],[-3,0,4],[-7,-3,0],[0,4,7],[-3,0,4],[-5,-1,2],[-7,-3,0]]},
+  beach:{name:'Seaside Skip',bpm:96,wave:'triangle',root:67,gate:.22,accent:.035,
+    melody:[12,0,16,19,0,21,19,0,16,19,0,24,0,21,19,0,
+      17,0,21,24,0,26,24,21,19,0,16,14,0,12,0,0,
+      19,21,0,24,0,28,24,0,26,24,21,0,19,0,16,0,
+      17,0,19,21,0,19,16,0,14,16,0,19,12,0,0,0],
+    chords:[[0,4,7],[-3,0,4],[-5,-1,2],[-7,-3,0],[0,4,7],[-3,0,4],[-5,-1,2],[-7,-3,0]],offbeat:true}
 });
 const hz = midi => 440 * 2 ** ((midi - 69) / 12);
 export class TrailAudio {
@@ -51,7 +69,7 @@ export class TrailAudio {
     osc.start(start); osc.stop(start + duration + .015);
   }
   start(id = 'meadow') {
-    this.stopVoices(); this.song = TRACKS[id] || TRACKS.meadow; this.step = 0;
+    this.stopVoices(); this.trackId=TRACKS[id]?id:'meadow'; this.song = TRACKS[this.trackId]; this.step = 0;
     if (this.ctx?.state === 'running') this.schedule();
     // unlock() resumes from the play click, never from this timer.
   }
@@ -66,9 +84,11 @@ export class TrailAudio {
         const i = this.step % track.melody.length, n = track.melody[i];
         const chord = track.chords[Math.floor(i / 8) % track.chords.length];
         if (n) {
-          this.tone(track.root + n, this.next, .31, .19, 'music', track.wave);
-          this.tone(track.root + n + 12, this.next, .12, .025, 'music');
+          this.tone(track.root+n,this.next,track.gate,.17,'music',track.wave);
+          this.tone(track.root+n+12,this.next,track.gate*.7,track.accent,'music');
         }
+        if(track.offbeat&&i%4===2)this.tone(track.root+chord[2],this.next,.18,.09,'music','triangle');
+        if(track.pulse&&i%2===1)this.tone(track.root+chord[0]-12,this.next,.10,.07,'music','triangle');
         if (i % 4 === 0) this.tone(track.root + chord[0] - 12, this.next, .43, .20, 'music', 'triangle');
         if (i % 8 === 0) chord.forEach((note, k) => this.tone(track.root + note, this.next + .025 * k, .8, .045));
         this.step++; this.next += length;
@@ -95,13 +115,13 @@ export class TrailAudio {
       source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();this.voices.delete(v);};source.start();
     }
   }
-  victory(perfect) {
+  victory(perfect,id='meadow') {
     this.song = null; this.stopVoices();
     if (!this.ctx || this.ctx.state !== 'running') return;
-    const t = this.ctx.currentTime + .03;
-    [72,76,79,84,81,84,88,91,88,84].forEach((n,i) => this.tone(n,t+i*.18,.33,.22));
-    [60,64,67,72].forEach((n,i) => this.tone(n,t+1.95+i*.045,1,.09));
-    if (perfect) [84,88,91,96].forEach((n,i) => this.tone(n,t+2.7+i*.12,.44,.15));
+    const t=this.ctx.currentTime+.03,shift=(TRACKS[id]||TRACKS.meadow).root-60;
+    [72,76,79,84,81,84,88,91,88,84].forEach((n,i) => this.tone(n+shift,t+i*.18,.33,.22));
+    [60,64,67,72].forEach((n,i) => this.tone(n+shift,t+1.95+i*.045,1,.09));
+    if (perfect) [84,88,91,96].forEach((n,i) => this.tone(n+shift,t+2.7+i*.12,.44,.15));
   }
   stopVoices() {
     clearInterval(this.timer);this.timer=null;

@@ -1,79 +1,76 @@
-# Treat Trail - Beta 2
+# Treat Trail 1.0.0
 
-One side-scrolling level: Sunshine Meadow. Claire leads Pusheen, Hello Kitty and Raspberry.
-Entry point: ../treat-trail.html. Static files only: no installation, build step, external assets or runtime libraries.
+First non-beta release. Open ../treat-trail.html from Claire Adventures.
+No installation, build step, accounts, external game assets or new image uploads.
 
-## What's new
+## Four adventures
 
-- A 5.4-second skippable finish celebration. Friends gather and dance; small pastel fireworks,
-  hearts and a synthesized victory tune play before the result bar appears below the scene.
-- A full-treat run has an extra heart-shaped burst. Friends keep dancing on the results screen.
-- Original, looping meadow music, plus jump, pickup, checkpoint, rescue and soft firework sounds.
-- Separate music/effects volume, quick mute, Gentle Effects and larger touch buttons.
-- Saved unfinished adventures: continue from the last checkpoint with every collected treat retained.
-- A level menu with a picture card, best score, Continue Adventure and Start Again confirmation.
-- Achievement stars: 1 for completing, 2 for at least 75% of treats, 3 for every treat.
-  Stars never lock access to a level. With 40 treats the thresholds are finish / 30 / 40.
+1. Sunshine Meadow: the original 40-treat level, pink dress and lavender bows, soft meadow melody.
+2. Pumpkin Patch: golden leaves, hay-bale platforms and a pumpkin-barn finish. Claire wears an orange sweater and overalls; the friends wear autumn accessories. Original plucky Pumpkin Parade music.
+3. Snowflake Trail: snowy pines, snow-bank platforms and a cocoa lodge. Claire has a warm coat, boots and earmuffs; friends have knitted hats and scarves. Original Snowflake Music Box melody.
+4. Sunny Seaside: palm trees, sandy islands and a beach hut. Claire has a turquoise sundress and sun hat; friends have sun hats, a visor and beachwear. Original syncopated Seaside Skip music.
 
-## What stays the same
+Each level has 40 treats, 12 raised platforms, three little gaps and three safe checkpoints.
+160 treats across four separately designed layouts. All four levels are immediately selectable.
+The three new soundtracks differ in melody, tempo, key, note length and accompaniment.
+Pusheen, Hello Kitty and Raspberry follow Claire in a train and retain the same identity in every outfit.
 
-Left, right, jump. Hold Jump for more height. Keyboard: arrows or A/D, Space/Up/W; Escape pauses.
-Sunshine Meadow still has 40 treats, 12 raised platforms, three creek gaps and three checkpoints.
-The original physics engine and all level geometry are unchanged. No enemies, lives or timer.
-Falling returns the group to safety without losing treats. Treat Time still has unlimited treats;
-this mini-game does not spend or transfer them. Stories and story images are untouched.
+## Play and finish
 
-## Progress and settings
+Left, right, jump. Hold Jump for more height. Keyboard: arrows/A/D and Space/Up/W.
+Touch supports simultaneous direction and jump; bigger buttons are available in Settings.
+There are no enemies, lives, timers or penalties for falling. Collected treats are kept after a rescue.
+Each finish has the same short skippable fireworks-and-dancing celebration, with themed scenery/outfits.
+Three achievement stars: finish / collect at least 30 / collect all 40.
+Results offer Next adventure (except on the final trail), Play again and Level menu.
+Next adventure resumes any saved run in that next level instead of deleting it.
 
-Local storage only. No account, cloud save, telemetry or cross-device synchronization.
-Beta 1's `claire-treat-trail-best:LEVEL-ID` key is preserved and supplies the initial stars.
-Incomplete runs use `claire-treat-trail-save:LEVEL-ID` with a schema and level-data version.
-Checkpoint index and collectible IDs are validated before use; world coordinates come from level data.
-Saves happen on pickup, checkpoint, pause, menu, hiding and leaving the page.
-Continue resumes at the safe checkpoint, not the exact position between checkpoints.
-A completion clears the unfinished run; replay starts fresh without reducing the best score.
-When browser storage is unavailable, play continues and the interface reports that saving is unavailable.
-Settings use `claire-treat-trail-settings:v2`. Clearing website data removes these device-local saves.
+## Saves and compatibility
 
-## Audio and accessibility
+Beta 2 meadow geometry, collectible IDs, level version, physics engine and storage keys are unchanged.
+Existing meadow progress, best scores, stars, audio settings and accessibility preferences remain compatible.
+Each adventure has its own device-local checkpoint save and best score.
+Continue restores the last safe checkpoint, retaining all collected treats.
+Nothing is synchronized between devices. Clearing website data removes local saves.
+Stories, story images and Treat Time are unchanged. Treat Time's treats remain unlimited and separate.
 
-The AudioContext is created/resumed from a Play/Continue interaction. No autoplay on arrival.
-The sequencer schedules a short look-ahead of oscillator notes; sources are stopped on pause or leaving.
-The victory tune uses the music slider; sound effects use the effects slider. Quiet mode mutes both.
-Settings pause gameplay and audio. Backgrounding the page pauses rather than silently resuming it later.
-Gentle Effects uses slow floating hearts, reduced dance movement and quieter chimes instead of noise pops.
-System Reduce Motion also enables Gentle Effects. No full-screen flashes or screen shaking.
-The game has keyboard focus handling, named controls, a restart confirmation and large-button option.
+## Sound, access and updates
 
-## Modules and future levels
+Audio begins only after Play/Continue/Next is tapped. Music and effects have separate sliders and quick mute.
+Opening Settings, pausing or leaving the game stops sound. No music autoplays in the story library.
+Gentle Effects (also selected by system Reduce Motion) reduces dancing, uses hearts instead of fireworks
+and disables falling snow/leaves. There are no full-screen flashes or screen shakes.
+Versioned modules and cache claire-adventures-v6-trail-1.0.0 add offline coverage for all four adventures.
+Open online on each device and wait for Saved for offline play before using it offline.
+Updating does not clear localStorage. Existing story-page caches are migrated rather than discarded.
 
-- levels.js: level definitions. `music: 'meadow'` chooses the soundtrack. `version` is the save/geometry version.
-- engine.js: original Beta 1 fixed-step simulation, collisions, followers and event generation; unchanged.
-- renderer.js: original scenery and vector character renderer; unchanged.
-- celebration.js: finish-only camera/scenery extension, dancing and bounded firework particles.
-- game.js: keyboard/multi-touch, menus, state transitions, saves and the main loop.
-- progress.js: validated checkpoint saves, legacy best scores, star thresholds and settings.
-- audio.js: Web Audio sound effects, sequencer and original TRACKS definitions.
-- style.css: base Beta 1 layout; unchanged. beta2.css adds menus, results and settings.
+## Modular source
 
-Add a level object to LEVELS with a stable unique ID; the menu generates its card automatically.
-Add a distinct track to TRACKS in audio.js and use its key in the level's music field.
-A track specifies bpm, oscillator waveform, root MIDI pitch, melody offsets and chord offsets.
-Zero melody entries are rests. No additional level or soundtrack is selectable in this beta.
-Changing collectible IDs or geometry should increment that level's version to invalidate incompatible saves.
-New game modules must be listed in the root service-worker CORE and site-update offline checks.
-Publish the full update atomically; update asset query versions and the service-worker cache name together.
+- levels.js: geometry, collectibles, safe points, descriptions and music/theme keys.
+- themes.js: four scene palettes, scenery, goals and 16 character outfit variants.
+- renderer.js: reusable canvas renderer; uses themes.js for the active level.
+- engine.js: unchanged fixed-step movement, collisions and follower breadcrumbs.
+- celebration.js: dancing and bounded particles using the current outfits.
+- audio.js: four original synthesized tracks and sound effects.
+- progress.js: unchanged validated per-level saves and settings.
+- game.js: input, menus, Next adventure, state transitions, audio and save hooks.
+- style.css and release.css: responsive layout and scrollable four-level menu.
 
-## Testing and limits
+Add a level with a unique stable id, theme/music key and safe geometry. Increment that level's version
+only when collectible IDs or geometry change. Add new modules to the service-worker and offline checks.
 
-Beta 2 passed 42 Chromium UI checks using the system browser with an in-memory module harness,
-including desktop, tablet portrait/landscape, phone landscape, real synthesized audio signal output,
-two-finger move+jump, mute, pause/resume, saves across document recreation, settings persistence,
-restart confirmation, all three star thresholds, old best-score migration, celebration skip and completion.
-Additional Node tests cover corrupt/versioned saves, blocked storage, geometry/physics regressions,
-the full 40-treat route with zero rescues, and service-worker installation/migration/offline fallback.
-The harness inlines the same ES modules because browser network navigation is restricted in this environment;
-it does not test production network loading or a real device's persistent storage.
-No physical iPad/Safari testing has been performed. Test sound, multi-touch and offline launch on Claire's iPad.
+## Release verification and limits
 
-Debug hooks are only installed with ?debug. Beta 1 source remains in Git history for rollback.
+All four deterministic physics routes collected 40/40 treats with zero rescues.
+244 Chromium UI assertions passed (61 each in desktop, tablet landscape, tablet portrait and phone landscape).
+Checks cover level cards, old meadow saves, soundtrack/outfit changes, nonzero bounded audio output,
+simultaneous move+jump, touch release, settings/pause, fireworks, stars, Next adventure, button bounds,
+independent best scores and no runtime exceptions. Data checks cover 16 outfit variants, 4 melodies,
+independent checkpoint saves and retained treats after rescue. Previous progress/physics tests also pass.
+Service-worker unit tests cover core installation, old-cache migration, unrelated-cache preservation,
+query-normalized offline fallbacks and network-first updates.
+
+Browser network navigation is restricted in this environment. UI tests used an in-memory module harness
+with the same source and a localStorage test double, not production network navigation or real persistent
+browser storage. No physical iPad or native Safari test was performed. Test touch, sound and offline
+startup on Claire's iPad after publishing. The source remains in Git history for rollback.

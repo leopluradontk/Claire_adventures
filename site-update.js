@@ -7,10 +7,10 @@
   async function checkOffline() {
     if (!('caches' in window)) return;
     const files = location.pathname.endsWith('/treat-trail.html')
-      ? ['treat-trail.html','treat-trail/style.css','treat-trail/game.js','treat-trail/levels.js','treat-trail/engine.js','treat-trail/renderer.js','treat-trail/audio.js','treat-trail/progress.js','treat-trail/celebration.js','treat-trail/beta2.css']
+      ? ['treat-trail.html','treat-trail/style.css','treat-trail/game.js','treat-trail/levels.js','treat-trail/engine.js','treat-trail/renderer.js','treat-trail/audio.js','treat-trail/progress.js','treat-trail/celebration.js','treat-trail/release.css','treat-trail/themes.js']
       : ['treat-time.html','treat-time.css','treat-time.js'];
     try {
-      const cache = await caches.open('claire-adventures-v5-trail-beta2');
+      const cache = await caches.open('claire-adventures-v6-trail-1.0.0');
       const ready = await Promise.all(files.map(file => cache.match(new URL(file, document.baseURI).href)));
       if (ready.every(response => response?.ok)) {
         document.documentElement.dataset.offlineReady = 'true';
