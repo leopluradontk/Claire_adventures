@@ -1,13 +1,194 @@
 {
-  "version": 2,
+  "version": 3,
   "stories": [
-    {"id":"pusheen-friend","title":"Claire & Pusheen Become Friends","subtitle":"12-page story","cover":"stories/pusheen-friend/cover.jpg","pages":["stories/pusheen-friend/01.jpg","stories/pusheen-friend/02.jpg","stories/pusheen-friend/03.jpg","stories/pusheen-friend/04.jpg","stories/pusheen-friend/05.jpg","stories/pusheen-friend/06.jpg","stories/pusheen-friend/07.jpg","stories/pusheen-friend/08.jpg","stories/pusheen-friend/09.jpg","stories/pusheen-friend/10.jpg","stories/pusheen-friend/11.jpg","stories/pusheen-friend/12.jpg"],"order":1},
-    {"id":"forest-adventure","title":"Claire & Pusheen’s Adventure","subtitle":"12-page story","cover":"stories/forest-adventure/cover.jpg","pages":["stories/forest-adventure/01.jpg","stories/forest-adventure/02.jpg","stories/forest-adventure/03.jpg","stories/forest-adventure/04.jpg","stories/forest-adventure/05.jpg","stories/forest-adventure/06.jpg","stories/forest-adventure/07.jpg","stories/forest-adventure/08.jpg","stories/forest-adventure/09.jpg","stories/forest-adventure/10.jpg","stories/forest-adventure/11.jpg","stories/forest-adventure/12.jpg"],"order":2},
-    {"id":"soccer-day","title":"Soccer with Pusheen & Hello Kitty","subtitle":"12-page story","cover":"stories/soccer-day/cover.jpg","pages":["stories/soccer-day/01.jpg","stories/soccer-day/02.jpg","stories/soccer-day/03.jpg","stories/soccer-day/04.jpg","stories/soccer-day/05.jpg","stories/soccer-day/06.jpg","stories/soccer-day/07.jpg","stories/soccer-day/08.jpg","stories/soccer-day/09.jpg","stories/soccer-day/10.jpg","stories/soccer-day/11.jpg","stories/soccer-day/12.jpg"],"order":3},
-    {"id":"playground","title":"Playground Adventure","subtitle":"12-page story","cover":"stories/playground/cover.jpg","pages":["stories/playground/01.jpg","stories/playground/02.jpg","stories/playground/03.jpg","stories/playground/04.jpg","stories/playground/05.jpg","stories/playground/06.jpg","stories/playground/07.jpg","stories/playground/08.jpg","stories/playground/09.jpg","stories/playground/10.jpg","stories/playground/11.jpg","stories/playground/12.jpg"],"order":4},
-    {"id":"swimming","title":"Swimming with Friends","subtitle":"12-page story","cover":"stories/swimming/cover.jpg","pages":["stories/swimming/01.jpg","stories/swimming/02.jpg","stories/swimming/03.jpg","stories/swimming/04.jpg","stories/swimming/05.jpg","stories/swimming/06.jpg","stories/swimming/07.jpg","stories/swimming/08.jpg","stories/swimming/09.jpg","stories/swimming/10.jpg","stories/swimming/11.jpg","stories/swimming/12.jpg"],"order":5},
-    {"id":"snowman","title":"Building a Snowman","subtitle":"12-page story","cover":"stories/snowman/cover.jpg","pages":["stories/snowman/01.jpg","stories/snowman/02.jpg","stories/snowman/03.jpg","stories/snowman/04.jpg","stories/snowman/05.jpg","stories/snowman/06.jpg","stories/snowman/07.jpg","stories/snowman/08.jpg","stories/snowman/09.jpg","stories/snowman/10.jpg","stories/snowman/11.jpg","stories/snowman/12.jpg"],"order":6},
-    {"id":"hair-day","title":"Claire’s Hair Day","subtitle":"12-page story","cover":"stories/hair-day/cover.jpg","pages":["stories/hair-day/01.jpg","stories/hair-day/02.jpg","stories/hair-day/03.jpg","stories/hair-day/04.jpg","stories/hair-day/05.jpg","stories/hair-day/06.jpg","stories/hair-day/07.jpg","stories/hair-day/08.jpg","stories/hair-day/09.jpg","stories/hair-day/10.jpg","stories/hair-day/11.jpg","stories/hair-day/12.jpg"],"order":7},
-    {"id":"shopping-day","title":"Claire & Friends Go Shopping","subtitle":"12-page story","cover":"stories/shopping-day/cover.jpg","pages":["stories/shopping-day/01.jpg","stories/shopping-day/02.jpg","stories/shopping-day/03.jpg","stories/shopping-day/04.jpg","stories/shopping-day/05.jpg","stories/shopping-day/06.jpg","stories/shopping-day/07.jpg","stories/shopping-day/08.jpg","stories/shopping-day/09.jpg","stories/shopping-day/10.jpg","stories/shopping-day/11.jpg","stories/shopping-day/12.jpg"],"order":8}
+    {
+      "id": "pusheen-friend",
+      "title": "Claire & Pusheen Become Friends",
+      "subtitle": "12-page story",
+      "cover": "stories/pusheen-friend/cover.jpg",
+      "pages": [
+        "stories/pusheen-friend/01.jpg",
+        "stories/pusheen-friend/02.jpg",
+        "stories/pusheen-friend/03.jpg",
+        "stories/pusheen-friend/04.jpg",
+        "stories/pusheen-friend/05.jpg",
+        "stories/pusheen-friend/06.jpg",
+        "stories/pusheen-friend/07.jpg",
+        "stories/pusheen-friend/08.jpg",
+        "stories/pusheen-friend/09.jpg",
+        "stories/pusheen-friend/10.jpg",
+        "stories/pusheen-friend/11.jpg",
+        "stories/pusheen-friend/12.jpg"
+      ],
+      "order": 1
+    },
+    {
+      "id": "forest-adventure",
+      "title": "Claire & Pusheen’s Adventure",
+      "subtitle": "12-page story",
+      "cover": "stories/forest-adventure/cover.jpg",
+      "pages": [
+        "stories/forest-adventure/01.jpg",
+        "stories/forest-adventure/02.jpg",
+        "stories/forest-adventure/03.jpg",
+        "stories/forest-adventure/04.jpg",
+        "stories/forest-adventure/05.jpg",
+        "stories/forest-adventure/06.jpg",
+        "stories/forest-adventure/07.jpg",
+        "stories/forest-adventure/08.jpg",
+        "stories/forest-adventure/09.jpg",
+        "stories/forest-adventure/10.jpg",
+        "stories/forest-adventure/11.jpg",
+        "stories/forest-adventure/12.jpg"
+      ],
+      "order": 2
+    },
+    {
+      "id": "soccer-day",
+      "title": "Soccer with Pusheen & Hello Kitty",
+      "subtitle": "12-page story",
+      "cover": "stories/soccer-day/cover.jpg",
+      "pages": [
+        "stories/soccer-day/01.jpg",
+        "stories/soccer-day/02.jpg",
+        "stories/soccer-day/03.jpg",
+        "stories/soccer-day/04.jpg",
+        "stories/soccer-day/05.jpg",
+        "stories/soccer-day/06.jpg",
+        "stories/soccer-day/07.jpg",
+        "stories/soccer-day/08.jpg",
+        "stories/soccer-day/09.jpg",
+        "stories/soccer-day/10.jpg",
+        "stories/soccer-day/11.jpg",
+        "stories/soccer-day/12.jpg"
+      ],
+      "order": 3
+    },
+    {
+      "id": "playground",
+      "title": "Playground Adventure",
+      "subtitle": "12-page story",
+      "cover": "stories/playground/cover.jpg",
+      "pages": [
+        "stories/playground/01.jpg",
+        "stories/playground/02.jpg",
+        "stories/playground/03.jpg",
+        "stories/playground/04.jpg",
+        "stories/playground/05.jpg",
+        "stories/playground/06.jpg",
+        "stories/playground/07.jpg",
+        "stories/playground/08.jpg",
+        "stories/playground/09.jpg",
+        "stories/playground/10.jpg",
+        "stories/playground/11.jpg",
+        "stories/playground/12.jpg"
+      ],
+      "order": 4
+    },
+    {
+      "id": "swimming",
+      "title": "Swimming with Friends",
+      "subtitle": "12-page story",
+      "cover": "stories/swimming/cover.jpg",
+      "pages": [
+        "stories/swimming/01.jpg",
+        "stories/swimming/02.jpg",
+        "stories/swimming/03.jpg",
+        "stories/swimming/04.jpg",
+        "stories/swimming/05.jpg",
+        "stories/swimming/06.jpg",
+        "stories/swimming/07.jpg",
+        "stories/swimming/08.jpg",
+        "stories/swimming/09.jpg",
+        "stories/swimming/10.jpg",
+        "stories/swimming/11.jpg",
+        "stories/swimming/12.jpg"
+      ],
+      "order": 5
+    },
+    {
+      "id": "snowman",
+      "title": "Building a Snowman",
+      "subtitle": "12-page story",
+      "cover": "stories/snowman/cover.jpg",
+      "pages": [
+        "stories/snowman/01.jpg",
+        "stories/snowman/02.jpg",
+        "stories/snowman/03.jpg",
+        "stories/snowman/04.jpg",
+        "stories/snowman/05.jpg",
+        "stories/snowman/06.jpg",
+        "stories/snowman/07.jpg",
+        "stories/snowman/08.jpg",
+        "stories/snowman/09.jpg",
+        "stories/snowman/10.jpg",
+        "stories/snowman/11.jpg",
+        "stories/snowman/12.jpg"
+      ],
+      "order": 6
+    },
+    {
+      "id": "hair-day",
+      "title": "Claire’s Hair Day",
+      "subtitle": "12-page story",
+      "cover": "stories/hair-day/cover.jpg",
+      "pages": [
+        "stories/hair-day/01.jpg",
+        "stories/hair-day/02.jpg",
+        "stories/hair-day/03.jpg",
+        "stories/hair-day/04.jpg",
+        "stories/hair-day/05.jpg",
+        "stories/hair-day/06.jpg",
+        "stories/hair-day/07.jpg",
+        "stories/hair-day/08.jpg",
+        "stories/hair-day/09.jpg",
+        "stories/hair-day/10.jpg",
+        "stories/hair-day/11.jpg",
+        "stories/hair-day/12.jpg"
+      ],
+      "order": 7
+    },
+    {
+      "id": "shopping-day",
+      "title": "Claire & Friends Go Shopping",
+      "subtitle": "12-page story",
+      "cover": "stories/shopping-day/cover.jpg",
+      "pages": [
+        "stories/shopping-day/01.jpg",
+        "stories/shopping-day/02.jpg",
+        "stories/shopping-day/03.jpg",
+        "stories/shopping-day/04.jpg",
+        "stories/shopping-day/05.jpg",
+        "stories/shopping-day/06.jpg",
+        "stories/shopping-day/07.jpg",
+        "stories/shopping-day/08.jpg",
+        "stories/shopping-day/09.jpg",
+        "stories/shopping-day/10.jpg",
+        "stories/shopping-day/11.jpg",
+        "stories/shopping-day/12.jpg"
+      ],
+      "order": 8
+    },
+    {
+      "id": "trick-or-treating",
+      "title": "Claire & Friends Go Trick-or-Treating",
+      "subtitle": "12-page story",
+      "cover": "stories/trick-or-treating/cover.jpg",
+      "pages": [
+        "stories/trick-or-treating/01.jpg",
+        "stories/trick-or-treating/02.jpg",
+        "stories/trick-or-treating/03.jpg",
+        "stories/trick-or-treating/04.jpg",
+        "stories/trick-or-treating/05.jpg",
+        "stories/trick-or-treating/06.jpg",
+        "stories/trick-or-treating/07.jpg",
+        "stories/trick-or-treating/08.jpg",
+        "stories/trick-or-treating/09.jpg",
+        "stories/trick-or-treating/10.jpg",
+        "stories/trick-or-treating/11.jpg",
+        "stories/trick-or-treating/12.jpg"
+      ],
+      "order": 9
+    }
   ]
 }
