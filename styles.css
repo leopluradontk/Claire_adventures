@@ -24,7 +24,7 @@ h1{font-size:clamp(2.2rem,6vw,4.4rem);line-height:.95;margin:0;letter-spacing:-.
 .story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
 .story-card{border:0;border-radius:28px;padding:0;background:var(--card);box-shadow:var(--shadow);overflow:hidden;text-align:left;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
 .story-card:active{transform:scale(.985)}
-.story-cover{aspect-ratio:1/1;width:100%;display:block;object-fit:cover;background:#eee}
+.story-cover{aspect-ratio:4/3;width:100%;display:block;object-fit:contain;background:linear-gradient(135deg,#fff2fa,#f3edff);padding:8px}
 .story-meta{padding:17px 18px 19px}
 .story-meta h2{font-size:1.2rem;line-height:1.1;margin:0 0 7px}
 .story-meta p{margin:0;color:var(--muted);font-size:.92rem}
