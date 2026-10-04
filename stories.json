@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "stories": [
     {
       "id": "pusheen-friend",
@@ -189,6 +189,27 @@
         "stories/trick-or-treating/12.jpg"
       ],
       "order": 9
+    },
+    {
+      "id": "pumpkin-patch",
+      "title": "Claire & Friends Go to the Pumpkin Patch",
+      "subtitle": "12-page story",
+      "cover": "stories/pumpkin-patch/cover.jpg",
+      "pages": [
+        "stories/pumpkin-patch/01.jpg",
+        "stories/pumpkin-patch/02.jpg",
+        "stories/pumpkin-patch/03.jpg",
+        "stories/pumpkin-patch/04.jpg",
+        "stories/pumpkin-patch/05.jpg",
+        "stories/pumpkin-patch/06.jpg",
+        "stories/pumpkin-patch/07.jpg",
+        "stories/pumpkin-patch/08.jpg",
+        "stories/pumpkin-patch/09.jpg",
+        "stories/pumpkin-patch/10.jpg",
+        "stories/pumpkin-patch/11.jpg",
+        "stories/pumpkin-patch/12.jpg"
+      ],
+      "order": 10
     }
   ]
 }
