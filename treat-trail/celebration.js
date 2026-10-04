@@ -1,5 +1,5 @@
 /* Finish presentation only; the Beta 1 physics and level geometry stay unchanged. */
-import {TrailRenderer} from './renderer.js?v=1.0.0';
+import {TrailRenderer} from './renderer.js?v=1.1.0';
 const TAU=Math.PI*2;
 const colors=['#e994b4','#eac36d','#ad9bd2','#79b6a7','#f2ba8d'];
 function heart(c,x,y,r,color){c.save();c.translate(x,y);c.scale(r/18,r/18);c.beginPath();c.moveTo(0,10);c.bezierCurveTo(-24,-4,-12,-22,0,-9);c.bezierCurveTo(12,-22,24,-4,0,10);c.fillStyle=color;c.fill();c.restore();}

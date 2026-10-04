@@ -1,8 +1,8 @@
 /* Treat Trail 1.0: menus, saves, audio and celebration; original physics retained. */
 import {LEVELS, validateLevel} from './levels.js?v=1.0.0';
 import {TrailGame, STEP} from './engine.js?v=1.0.0';
-import {TrailRenderer, loadArt} from './renderer.js?v=1.0.0';
-import {CelebrationRenderer} from './celebration.js?v=1.0.0';
+import {TrailRenderer, loadArt} from './renderer.js?v=1.1.0';
+import {CelebrationRenderer} from './celebration.js?v=1.1.0';
 import {ProgressStore, starsFor} from './progress.js?v=1.0.0';
 import {TrailAudio} from './audio.js?v=1.0.0';
 const $=id=>document.getElementById(id), controls=[...document.querySelectorAll('[data-control]')];

@@ -1,5 +1,5 @@
-/* Version 7: Coloring Time 1.0 and network-first updates with an offline fallback. */
-const CACHE = 'claire-adventures-v7-coloring-1.0.0';
+/* Version 8: Stuffy Studios 1.1 and network-first updates with an offline fallback. */
+const CACHE = 'claire-adventures-v8-studios-1.1.0';
 const ROOT = new URL('./', self.location.href);
 const CORE = ['index.html', 'styles.css', 'app.js', 'stories.json',
   'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
@@ -7,7 +7,8 @@ const CORE = ['index.html', 'styles.css', 'app.js', 'stories.json',
   'treat-trail.html', 'treat-trail/style.css', 'treat-trail/game.js',
   'treat-trail/engine.js', 'treat-trail/levels.js', 'treat-trail/renderer.js',
   'treat-trail/audio.js', 'treat-trail/progress.js', 'treat-trail/celebration.js', 'treat-trail/release.css','treat-trail/themes.js',
-  'coloring-time.html','coloring/style.css','coloring/app.js','coloring/paint.js','coloring/store.js','coloring/pages.js','coloring/art.js','coloring/art-data.js','coloring/art/claire0.js','coloring/art/claire1.js','coloring/art/claire2.js','coloring/art/pusheen0.js','coloring/art/pusheen1.js','coloring/art/kitty0.js','coloring/art/kitty1.js','coloring/art/raspberry0.js','coloring/art/raspberry1.js','coloring/art/together0.js','coloring/art/together1.js','coloring/art/together2.js','coloring/art/together3.js','coloring/art/together4.js'];
+  'coloring-time.html','coloring/style.css','coloring/app.js','coloring/paint.js','coloring/store.js','coloring/pages.js','coloring/art.js','coloring/art-data.js','coloring/art/claire0.js','coloring/art/claire1.js','coloring/art/claire2.js','coloring/art/pusheen0.js','coloring/art/pusheen1.js','coloring/art/kitty0.js','coloring/art/kitty1.js','coloring/art/raspberry0.js','coloring/art/raspberry1.js','coloring/art/together0.js','coloring/art/together1.js','coloring/art/together2.js','coloring/art/together3.js','coloring/art/together4.js',
+  'bakery.html','dress-up.html','studios/bakery.js','studios/characters.js','studios/dress-up.js','studios/food.js','studios/model.js','studios/style.css','studios/ui.js','studios/wardrobe.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
