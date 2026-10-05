@@ -1,7 +1,7 @@
-/* Version 9: Stuffy Playroom 1.2 and network-first updates with an offline fallback. */
-const CACHE = 'claire-adventures-v9-playroom-1.2.0';
+/* Version 10: Stuffy Clubhouse and Music & Dance 1.3 and network-first updates with an offline fallback. */
+const CACHE = 'claire-adventures-v10-club-stage-1.3.0';
 const ROOT = new URL('./', self.location.href);
-const CORE = ["memory-match.html", "stuffy-snake.html", "arcade/style.css", "arcade/designs.js", "arcade/memory-model.js", "arcade/memory-app.js", "arcade/snake-model.js", "arcade/snake-art.js", "arcade/snake-app.js", "arcade/common.js", "arcade/store.js", 'index.html', 'styles.css', 'app.js', 'stories.json',
+const CORE = ["clubhouse.html", "music-dance.html", "club-stage/art-copy.js", "club-stage/audio.js", "club-stage/catalog.js", "club-stage/clubhouse.js", "club-stage/common.js", "club-stage/dance.js", "club-stage/model.js", "club-stage/move-icons.js", "club-stage/performers.js", "club-stage/props.js", "club-stage/rhythm.js", "club-stage/style.css", "memory-match.html", "stuffy-snake.html", "arcade/style.css", "arcade/designs.js", "arcade/memory-model.js", "arcade/memory-app.js", "arcade/snake-model.js", "arcade/snake-art.js", "arcade/snake-app.js", "arcade/common.js", "arcade/store.js", 'index.html', 'styles.css', 'app.js', 'stories.json',
   'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'treat-time.html', 'treat-time.css', 'treat-time.js', 'site-update.js',
   'treat-trail.html', 'treat-trail/style.css', 'treat-trail/game.js',

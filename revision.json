@@ -1,21 +1,17 @@
 {
   "app": "Claire Adventures",
-  "version": "1.2.0",
-  "release": "Stuffy Playroom",
-  "basedOn": "dff6b7b6e21d122dba6ed5df6e03f21266edadea",
-  "recoveryBranch": "backup/pre-playroom-1.2.0",
+  "version": "1.3.0",
+  "release": "Stuffy Clubhouse and Music & Dance",
+  "basedOn": "74e0e9996a154b7374b403418272e90fb6b5054b",
+  "recoveryBranch": "backup/pre-clubhouse-stage-1.3.0",
   "activitiesAdded": [
-    "memory-match.html",
-    "stuffy-snake.html"
+    "clubhouse.html",
+    "music-dance.html"
   ],
-  "saveSchema": "additive claire-arcade:v1",
+  "saveSchema": "additive claire-club-stage:v1; separate claire-clubhouse-art IndexedDB copies",
   "preserved": [
-    "coloring",
-    "stories",
-    "trail levels and physics",
-    "bakery",
-    "dress-up",
-    "Treat Time",
-    "all earlier save keys"
+    "all earlier save keys and colouring database",
+    "all existing activities and character art",
+    "original story images and library"
   ]
 }
