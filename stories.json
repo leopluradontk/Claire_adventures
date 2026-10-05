@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "stories": [
     {
       "id": "pusheen-friend",
@@ -210,6 +210,48 @@
         "stories/pumpkin-patch/12.jpg"
       ],
       "order": 10
+    },
+    {
+      "id": "princess-dress-up-day",
+      "title": "Claire & Friends: Princess Dress-Up Day",
+      "subtitle": "12-page story",
+      "cover": "stories/princess-dress-up-day/cover.jpg",
+      "pages": [
+        "stories/princess-dress-up-day/01.jpg",
+        "stories/princess-dress-up-day/02.jpg",
+        "stories/princess-dress-up-day/03.jpg",
+        "stories/princess-dress-up-day/04.jpg",
+        "stories/princess-dress-up-day/05.jpg",
+        "stories/princess-dress-up-day/06.jpg",
+        "stories/princess-dress-up-day/07.jpg",
+        "stories/princess-dress-up-day/08.jpg",
+        "stories/princess-dress-up-day/09.jpg",
+        "stories/princess-dress-up-day/10.jpg",
+        "stories/princess-dress-up-day/11.jpg",
+        "stories/princess-dress-up-day/12.jpg"
+      ],
+      "order": 11
+    },
+    {
+      "id": "princess-tea-party",
+      "title": "Claire & Friends: Princess Tea Party",
+      "subtitle": "12-page story",
+      "cover": "stories/princess-tea-party/cover.jpg",
+      "pages": [
+        "stories/princess-tea-party/01.jpg",
+        "stories/princess-tea-party/02.jpg",
+        "stories/princess-tea-party/03.jpg",
+        "stories/princess-tea-party/04.jpg",
+        "stories/princess-tea-party/05.jpg",
+        "stories/princess-tea-party/06.jpg",
+        "stories/princess-tea-party/07.jpg",
+        "stories/princess-tea-party/08.jpg",
+        "stories/princess-tea-party/09.jpg",
+        "stories/princess-tea-party/10.jpg",
+        "stories/princess-tea-party/11.jpg",
+        "stories/princess-tea-party/12.jpg"
+      ],
+      "order": 12
     }
   ]
 }
