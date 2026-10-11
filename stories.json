@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "stories": [
     {
       "id": "pusheen-friend",
@@ -252,6 +252,48 @@
         "stories/princess-tea-party/12.jpg"
       ],
       "order": 12
+    },
+    {
+      "id": "rollerblading-day",
+      "title": "Claire & Friends: Rollerblading Day",
+      "subtitle": "12-page story",
+      "cover": "stories/rollerblading-day/cover.jpg",
+      "pages": [
+        "stories/rollerblading-day/01.jpg",
+        "stories/rollerblading-day/02.jpg",
+        "stories/rollerblading-day/03.jpg",
+        "stories/rollerblading-day/04.jpg",
+        "stories/rollerblading-day/05.jpg",
+        "stories/rollerblading-day/06.jpg",
+        "stories/rollerblading-day/07.jpg",
+        "stories/rollerblading-day/08.jpg",
+        "stories/rollerblading-day/09.jpg",
+        "stories/rollerblading-day/10.jpg",
+        "stories/rollerblading-day/11.jpg",
+        "stories/rollerblading-day/12.jpg"
+      ],
+      "order": 13
+    },
+    {
+      "id": "gymnastics-day",
+      "title": "Claire & Friends: Gymnastics Day",
+      "subtitle": "12-page story",
+      "cover": "stories/gymnastics-day/cover.jpg",
+      "pages": [
+        "stories/gymnastics-day/01.jpg",
+        "stories/gymnastics-day/02.jpg",
+        "stories/gymnastics-day/03.jpg",
+        "stories/gymnastics-day/04.jpg",
+        "stories/gymnastics-day/05.jpg",
+        "stories/gymnastics-day/06.jpg",
+        "stories/gymnastics-day/07.jpg",
+        "stories/gymnastics-day/08.jpg",
+        "stories/gymnastics-day/09.jpg",
+        "stories/gymnastics-day/10.jpg",
+        "stories/gymnastics-day/11.jpg",
+        "stories/gymnastics-day/12.jpg"
+      ],
+      "order": 14
     }
   ]
 }
